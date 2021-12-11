@@ -16,34 +16,202 @@ int main()
     
     //giving the texture to the specific objects
     sf::Texture playerTexture;
-    playerTexture.loadFromFile("p.png");
+    playerTexture.loadFromFile("player.png");
 
-
-    //creating player
-    Player player(&playerTexture, sf::Vector2u(1, 1), 0.0, 100.0);
+    Player player(&playerTexture, sf::Vector2u(8, 6), 0.3f, 200.0f, 200.0f);
+    sf::RectangleShape meme(sf::Vector2f(200.f, 300.f));
+    meme.setPosition(450.0, 450.0);
     
-    
-    float deltaTime = 0.0f;
-    sf::Clock clock;
+    //Text, font, menu etc
+    sf::Text mainmenu;
+    sf::Text option0;
+    sf::Text option1;
+    sf::Text option2;
+    sf::Font font;
+   // if (true)
+   // {
+        if (!font.loadFromFile("arial.ttf"))
+            throw("couldnt load the font");
 
-    while(window.isOpen()) {
-        //deltaTime will make the game logic independent of FPS
-        deltaTime = clock.restart().asSeconds();
-        sf::Event event;
+        //gaem naem 
+       // if (true) {
+            
+            mainmenu.setFont(font);
+            mainmenu.setString("Yggdrasil");
+            mainmenu.setCharacterSize(120);
+            mainmenu.setFillColor(sf::Color::Cyan);
+            mainmenu.setPosition(sf::Vector2f(220.0f, 50.0f));
+      //  }
+        //option0
+      //  if (true) {
 
-        while(window.pollEvent(event)) {
-            if(event.type == sf::Event::Closed) {
-                window.close();
+            option0.setFont(font);
+            option0.setString("Uno gaem my friend?");
+            option0.setCharacterSize(90);
+            option0.setFillColor(sf::Color::Cyan);
+            option0.setPosition(sf::Vector2f(300.0f, 250.0f));
+       // }
+        //option1
+            if (true) {
+
+                option1.setFont(font);
+                option1.setString("Settingos, but u dont need this");
+                option1.setCharacterSize(90);
+                option1.setFillColor(sf::Color::Cyan);
+                option1.setPosition(sf::Vector2f(400.0f, 450.0f));
+                //  }
+                  //option2
+                //  if (true) {
+
+                option2.setFont(font);
+                option2.setString("Exito see you laterito");
+                option2.setCharacterSize(90);
+                option2.setFillColor(sf::Color::Cyan);
+                option2.setPosition(sf::Vector2f(600.0f, 650.0f));
+                //}
+
+
+          //  }
+
+            //menu declarations
+                int option = 0;
+                bool in_menu = true;
+                bool good = true;
+
+
+
+                float deltaTime = 0.0f;
+                sf::Clock clock;
+
+                while (window.isOpen()) {
+                    //deltaTime will make the game logic independent of FPS
+                    deltaTime = clock.restart().asSeconds();
+                    sf::Event event;
+
+                    //Main Menu
+                    if (in_menu) {
+
+                        if (option == 1)
+                        {
+                            option0.setFillColor(sf::Color::White);
+                            option0.setCharacterSize(100);
+                            option1.setFillColor(sf::Color::Cyan);
+                            option1.setCharacterSize(90);
+                            option2.setFillColor(sf::Color::Cyan);
+                            option2.setCharacterSize(90);
+
+                        }
+                        if (option == 2)
+                        {
+                            option0.setFillColor(sf::Color::Cyan);
+                            option0.setCharacterSize(90);
+                            option1.setFillColor(sf::Color::White);
+                            option1.setCharacterSize(100);
+                            option2.setFillColor(sf::Color::Cyan);
+                            option2.setCharacterSize(90);
+
+                        }
+                        if (option == 3)
+                        {
+                            option0.setFillColor(sf::Color::Cyan);
+                            option0.setCharacterSize(90);
+                            option1.setFillColor(sf::Color::Cyan);
+                            option1.setCharacterSize(90);
+                            option2.setFillColor(sf::Color::White);
+                            option2.setCharacterSize(100);
+
+                        }
+                        window.draw(mainmenu);
+                        window.draw(option0);
+                        window.draw(option1);
+                        window.draw(option2);
+
+
+                    }
+
+                    else
+                    {
+                        if (option == 1)
+                        {
+                            //creating player
+                           // Player player(&playerTexture, sf::Vector2u(1, 1), 0.0, 100.0);
+                          //  sf::RectangleShape meme(sf::Vector2f(200.f, 300.f));
+                           // meme.setPosition(450.0, 450.0);
+
+                            
+                            window.clear();
+                            window.draw(meme);
+                            window.setView(view);
+                            player.Draw(window);
+                            player.update(deltaTime);
+
+                            view.setCenter(player.GetPosition());
+                        }
+                        if (option == 2) {
+                            sf::Text inst;
+                            inst.setFont(font);
+                            inst.setString("U dont need this but ok. its W S A D. glhf");
+                            inst.setCharacterSize(60);
+                            inst.setFillColor(sf::Color::White);
+                            inst.setPosition(sf::Vector2f(200.0, 400.0));
+                            window.draw(inst);
+                            if (option == 3) {
+                                window.close();
+                            }
+
+                        }
+                    }
+                    while (window.pollEvent(event))
+                    {
+                        if (event.type == sf::Event::Closed) {
+                            window.close();
+                        }
+                        if (event.type == event.KeyPressed)
+                        {
+                            if (good)
+                            {
+                                if (event.key.code == sf::Keyboard::Down)
+                                {
+                                    if (option < 3) { option += 1; }
+                                    else { option = 1; }
+                                }
+                                if (event.key.code == sf::Keyboard::Up) {
+                                    if (option > 1) { option -= 1; }
+                                    else { option = 3; };
+                                }
+                                if (event.key.code == sf::Keyboard::Enter or event.key.code == sf::Keyboard::Space) {
+                                    in_menu = false;
+
+                                }
+                                good = false;
+                            }
+                            if (event.key.code == sf::Keyboard::Escape) {
+                                if (in_menu) {
+                                    option = 3;
+                                    in_menu = false;
+                                }
+                                else if (!in_menu) {
+                                    option = 1;
+                                    in_menu = true;
+                                }
+                    
+
+                            }
+                        }
+                        if (event.type == event.KeyReleased) {
+                            good = true;
+                        }
+                    }
+
+
+                   
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                        window.close();
+                    }
+
+                    
+                    window.display();
+                    window.clear();
+                }
             }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            window.close();
-        }
-
-        player.Draw(window);
-        player.update(deltaTime);
-        window.display();
-        window.clear();
-    }
-
 }
