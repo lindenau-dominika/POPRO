@@ -4,7 +4,7 @@
 class Animation
 {
 public:
-		Animation(sf::Texture* texture, sf::Vector2u imageCount, float fps);
+		Animation(sf::Texture* texture, sf::Vector2u imageCount, float deltaTime);
 	~Animation();
 
 	//metoda do aktualizowania animacji
@@ -17,6 +17,6 @@ private:
 	sf::Vector2u currentImage;
 	
 	float totalTime;
-	float fps;
+	float deltaTime;
 };
 

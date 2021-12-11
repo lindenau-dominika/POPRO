@@ -4,7 +4,7 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float fps)
 {
 	//just some cute pointers that everybody loves and admire
 	this->imageCount = imageCount;
-	this->fps = fps;
+	this->deltaTime = deltaTime;
 	totalTime = 0.0f;
 	currentImage.x = 0;
 
@@ -19,11 +19,12 @@ Animation::~Animation()
 }
 void Animation::Update(int row, float deltaTime, bool faceRight)
 {
+
 	currentImage.y = row;
 	totalTime += deltaTime;
 
-	if (totalTime >= fps)
+	if (totalTime >= deltaTime)
 	{
-
+		
 	}
 }
