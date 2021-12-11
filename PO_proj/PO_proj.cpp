@@ -133,10 +133,12 @@ int main()
                     {
                         if (option == 1)
                         {
-                            //creating player
-                           // Player player(&playerTexture, sf::Vector2u(1, 1), 0.0, 100.0);
-                          //  sf::RectangleShape meme(sf::Vector2f(200.f, 300.f));
-                           // meme.setPosition(450.0, 450.0);
+                          //  sf::Music music;
+                         //   if (!music.openFromFile("soundtrack.wav"))
+                         //       return -1;
+                          //  music.setVolume(60.f);
+                          //  music.play();
+                          //  music.setLoop(true);
 
                             
                             window.clear();
