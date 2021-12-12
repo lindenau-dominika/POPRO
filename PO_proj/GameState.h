@@ -10,11 +10,20 @@ class GameState : public State {
 private:
 	// Assets
 	std::shared_ptr<sf::Texture> playerTexture;
+	std::shared_ptr<sf::Texture> avatarTexture;
+	std::shared_ptr<sf::Texture> barTexture;
+	std::shared_ptr<sf::Texture> fbarTexture;
 	std::unique_ptr<sf::Music> music;
 
 	// Game objects
 	std::unique_ptr<Player> player;
 	sf::RectangleShape meme;
+
+	//Interface - Healthbar, avatar
+	sf::RectangleShape bar;
+	sf::RectangleShape f_bar;
+	sf::RectangleShape avatar;
+	sf::RectangleShape f_avatar;
 
 	// Camera
 	sf::View view;
