@@ -53,13 +53,19 @@ void Menu::select(int index)
 
 void Menu::move_up()
 {
-	int index = (selected - 1) % static_cast<int>(options.size());
+	int index = selected - 1;
+	if (selected == 0) {
+		index = options.size() - 1;
+	}
 	select(index);
 }
 
 void Menu::move_down()
 {
-	int index = (selected + 1) % static_cast<int>(options.size());
+	int index = selected + 1;
+	if (selected == options.size() - 1) {
+		index = 0;
+	}
 	select(index);
 }
 
