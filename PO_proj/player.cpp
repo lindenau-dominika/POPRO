@@ -1,6 +1,5 @@
 #include "player.h"
 
-
 Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
 	animation(texture, imageCount, switchTime) {
 	this->speed = speed;
@@ -22,7 +21,7 @@ Player::~Player()
 //declaring the movement
 void Player::update(float deltaTime) 
 {
-	bound = body.getGlobalBounds();
+ 	bound = body.getGlobalBounds();
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 
@@ -57,7 +56,6 @@ void Player::update(float deltaTime)
 	body.move(velocity.x * deltaTime, velocity.y * deltaTime);	
 }
 
-void Player::Draw(sf::RenderWindow& window)
-{
-	window.draw(body);
+void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	target.draw(body);
 }

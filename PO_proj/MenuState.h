@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "state.h"
 
 const sf::Color SELECTED_COLOR = sf::Color::White;
 const int SELECTED_SIZE = 100;
@@ -11,7 +12,7 @@ const int TITLE_SIZE = 120;
 const sf::Vector2f TITLE_POSITION = sf::Vector2f(220.0f, 50.0f);
 
 
-class Menu : public sf::Drawable {
+class MenuState : public State {
 private:
 	int selected = 0;
 	sf::Font font;
@@ -19,8 +20,9 @@ private:
 	std::vector<sf::Text> options;
 	void select(int index);
 public:
-	Menu(const std::string& title, sf::Font &font);
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	MenuState(StateMachine& machine, const std::string& title, sf::Font &font);
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	virtual void update(sf::RenderWindow& window, float deltaTime);
 	void add_option(const std::string& contents, const sf::Vector2f position);
 
 	void move_up();

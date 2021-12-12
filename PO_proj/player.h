@@ -3,7 +3,7 @@
 #include "animation.h"
 
 
-class Player
+class Player : public sf::Drawable
 {
 private:
 	float speed;
@@ -19,7 +19,7 @@ public:
 	~Player();
 	//creating the functions responsible for updating the display, so the player wont be leaving any pixels behind 
 	void update(float deltaTime);
-	void Draw(sf::RenderWindow& window);
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	//collecting information about the position of player
 	sf::Vector2f GetPosition()
 	{
