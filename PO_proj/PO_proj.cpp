@@ -16,7 +16,7 @@ int main()
     
     //giving the texture to the specific objects
     sf::Texture playerTexture;
-    playerTexture.loadFromFile("player.png");
+    playerTexture.loadFromFile("assets/player.png");
 
     Player player(&playerTexture, sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
     sf::RectangleShape meme(sf::Vector2f(200.f, 300.f));
@@ -32,12 +32,12 @@ int main()
 
     // Music
     sf::Music music;
-    if (!music.openFromFile("soundtrack.wav"))
+    if (!music.openFromFile("assets/soundtrack.wav"))
         return -1;
     music.setVolume(60.f);
     music.setLoop(true);
 
-    if (!font.loadFromFile("arial.ttf"))
+    if (!font.loadFromFile("assets/arial.ttf"))
         throw("couldnt load the font");
 
     //gaem naem 
