@@ -2,7 +2,7 @@
 
 
 Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
-	animation(texture, imageCount, deltaTime) {
+	animation(texture, imageCount, switchTime) {
 	this->speed = speed;
 
 	row = 0;
@@ -18,6 +18,7 @@ Player::~Player()
 {
 
 }
+
 //declaring the movement
 void Player::update(float deltaTime) 
 {
@@ -43,7 +44,7 @@ void Player::update(float deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		velocity.y = speed;
-		row = 3;
+		row = 1;
 	}
 	if (abs(velocity.x) < 0.1f && abs(velocity.y) < 0.1f)
 	{
