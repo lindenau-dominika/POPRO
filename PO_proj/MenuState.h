@@ -18,6 +18,7 @@ private:
 	sf::Font font;
 	sf::Text title;
 	std::vector<sf::Text> options;
+	sf::View menuView;
 	void select(int index);
 public:
 	MenuState(StateMachine& machine, const std::string& title, sf::Font &font);

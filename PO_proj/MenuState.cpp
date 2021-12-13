@@ -4,7 +4,7 @@
 #include "StateMachine.h"
 #include <memory>
 
-MenuState::MenuState(StateMachine& machine, const std::string& title, sf::Font &font) : State(machine), font(font)
+MenuState::MenuState(StateMachine& machine, const std::string& title, sf::Font &font) : State(machine), font(font), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
 {
 	this->title.setFont(font);
 	this->title.setString(title);
@@ -14,7 +14,7 @@ MenuState::MenuState(StateMachine& machine, const std::string& title, sf::Font &
 }
 
 void MenuState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.setView(target.getDefaultView());
+	target.setView(menuView);
 	target.draw(title);
 	for (auto& option : options) {
 		target.draw(option);
