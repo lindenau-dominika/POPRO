@@ -1,7 +1,7 @@
 #include "GameState.h"
 #include "StateMachine.h"
 
-GameState::GameState(StateMachine& machine) : State(machine), view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)) {
+GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(400.0f, 400.0f)) {
     // Load player texture
     playerTexture = std::make_shared<sf::Texture>();
     if (!playerTexture->loadFromFile("assets/player.png")) {
@@ -16,35 +16,36 @@ GameState::GameState(StateMachine& machine) : State(machine), view(sf::Vector2f(
     meme.setPosition(450.0, 450.0);
 
     //Interface - Healthbar, avatar
+    maxHp = hp = 1337;
+
     int z = 8;
     int hpp = 10;
     float x = hpp*z;
     avatar = sf::RectangleShape(sf::Vector2f(80.f, 95.f));
-    f_bar = sf::RectangleShape(sf::Vector2f(110.f, 16.f));
-    bar = sf::RectangleShape(sf::Vector2f(x, 10.f));
-  
-
-    
-   
-    //load interface texture 
+    frameBar = sf::RectangleShape(sf::Vector2f(110.f, 16.f));
+    healthBar = sf::RectangleShape(sf::Vector2f(x, 10.f));
+ 
+    // Load interface textures
     avatarTexture = std::make_shared<sf::Texture>();
     if (!avatarTexture->loadFromFile("assets/avatar.png")) {
         throw("Couldn't load the avatar texture");
     }
+    avatar.setTexture(avatarTexture.get());
+    avatar.setPosition(0.0f, 50.0f);
 
-    fbarTexture = std::make_shared<sf::Texture>();
-    if (!fbarTexture->loadFromFile("assets/frame_Healthbar.png")) {
+    frameBarTexture = std::make_shared<sf::Texture>();
+    if (!frameBarTexture->loadFromFile("assets/frame_Healthbar.png")) {
         throw("Couldn't load the healthbar frame texture");
     }
+    frameBar.setTexture(frameBarTexture.get());
+    healthBar.setPosition(0.0f, 100.0f);
 
-    barTexture = std::make_shared<sf::Texture>();
-    if (!barTexture->loadFromFile("assets/Healthbar.png")) {
+    healthBarTexture = std::make_shared<sf::Texture>();
+    if (!healthBarTexture->loadFromFile("assets/Healthbar.png")) {
         throw("Couldn't load the healthbar texture");
     }
-    
-    avatar.setTexture(avatarTexture.get());
-    f_bar.setTexture(fbarTexture.get());
-    bar.setTexture(barTexture.get());
+    healthBar.setTexture(healthBarTexture.get());
+    frameBar.setPosition(0.0f, 100.0f);
     
     // Load music
     music = std::make_unique<sf::Music>();
@@ -57,12 +58,16 @@ GameState::GameState(StateMachine& machine) : State(machine), view(sf::Vector2f(
 }
 
 void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.setView(view);
+    // Draw world
+    target.setView(gameView);
     target.draw(meme);
     target.draw(*player);
+
+    // Draw UI
+    target.setView(interfaceView);
     target.draw(avatar);
-    target.draw(bar);
-    target.draw(f_bar);
+    target.draw(healthBar);
+    target.draw(frameBar);
 }
 
 void GameState::update(sf::RenderWindow& window, float deltaTime) {
@@ -82,9 +87,6 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     }
 
     player->update(deltaTime);
-    avatar.setPosition(player->GetPosition().x - 340.f, player->GetPosition().y +90.f);
-    bar.setPosition(player->GetPosition().x -257.f, player->GetPosition().y + 160.f);
-    f_bar.setPosition(player->GetPosition().x -262.f, player->GetPosition().y + 156.5f);
 
-    view.setCenter(player->GetPosition());
+    gameView.setCenter(player->GetPosition());
 }
