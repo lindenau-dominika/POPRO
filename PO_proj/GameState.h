@@ -19,14 +19,10 @@ private:
 	std::unique_ptr<Player> player;
 	sf::RectangleShape meme;
 	
-	// Temp variables for health
-	int hp;
-	int maxHp;
-
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;
 	sf::RectangleShape frameBar;
-	sf::RectangleShape avatar;
+	sf::Sprite avatar;
 	sf::RectangleShape avatarFrame;
 
 	// Camera
