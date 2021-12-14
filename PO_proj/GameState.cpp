@@ -18,38 +18,32 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     //Interface - Healthbar, avatar
     float x = 100 * (static_cast<float>(player->GetHp()) / player->GetMaxHp());
     //avatar = sf::RectangleShape(sf::Vector2f(80.f, 95.f));
-    frameBar = sf::RectangleShape(sf::Vector2f(220.f, 26.f));
     healthBar = sf::RectangleShape(sf::Vector2f(x * 2, 17.f));
  
     // Load interface textures
     avatarTexture = std::make_shared<sf::Texture>();
-    if (!avatarTexture->loadFromFile("assets/avatar.png")) {
+    if (!avatarTexture->loadFromFile("assets/interface.png")) {
         throw("Couldn't load the avatar texture");
     }
     avatar = sf::Sprite(*avatarTexture.get());
     avatar.setScale(0.125, 0.125);
-    avatar.setPosition(0.0f, 0.0f);
+    avatar.setPosition(2.0f, 2.0f);
 
-    frameBarTexture = std::make_shared<sf::Texture>();
-    if (!frameBarTexture->loadFromFile("assets/frame_Healthbar.png")) {
-        throw("Couldn't load the healthbar frame texture");
-    }
-    frameBar.setTexture(frameBarTexture.get());
-    frameBar.setPosition(100.0f, 0.0f);
 
     healthBarTexture = std::make_shared<sf::Texture>();
     if (!healthBarTexture->loadFromFile("assets/Healthbar.png")) {
         throw("Couldn't load the healthbar texture");
     }
+    healthBar.setScale(0.68f, 1.f);
     healthBar.setTexture(healthBarTexture.get());
-    healthBar.setPosition(108.0f, 3.0f);
+    healthBar.setPosition(112.0f, 15.f);
     
     // Load music
     music = std::make_unique<sf::Music>();
     if (!music->openFromFile("assets/soundtrack.wav")) {
         throw("Couldn't load the soundtrack");
     }
-    music->setVolume(20.f);
+    music->setVolume(0.f);
     music->setLoop(true);
     music->play();
 }
@@ -62,9 +56,10 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     // Draw UI
     target.setView(interfaceView);
-    target.draw(avatar);
+   
+    
     target.draw(healthBar);
-    target.draw(frameBar);
+    target.draw(avatar);
 }
 
 void GameState::update(sf::RenderWindow& window, float deltaTime) {

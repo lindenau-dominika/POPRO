@@ -12,7 +12,6 @@ private:
 	std::shared_ptr<sf::Texture> playerTexture;
 	std::shared_ptr<sf::Texture> avatarTexture;
 	std::shared_ptr<sf::Texture> healthBarTexture;
-	std::shared_ptr<sf::Texture> frameBarTexture;
 	std::unique_ptr<sf::Music> music;
 
 	// Game objects
@@ -21,7 +20,6 @@ private:
 	
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;
-	sf::RectangleShape frameBar;
 	sf::Sprite avatar;
 	sf::RectangleShape avatarFrame;
 
