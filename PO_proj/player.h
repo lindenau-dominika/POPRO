@@ -6,6 +6,8 @@
 class Player : public sf::Drawable
 {
 private:
+	int hp;
+	int maxHp;
 	float speed;
 	Animation animation;
 	sf::FloatRect bound;
@@ -25,5 +27,9 @@ public:
 	{
 		return body.getPosition();
 	}
+
+	int GetHp();
+	int GetMaxHp();
+	void SubHp(int damage);
 };
 
