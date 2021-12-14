@@ -9,7 +9,7 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     }
 
     // Set up player
-    player = std::make_unique<Player>(playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
+    player = std::make_unique<Player>(1337, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
 
     // Set up field
     meme = sf::RectangleShape(sf::Vector2f(200.f, 300.f));

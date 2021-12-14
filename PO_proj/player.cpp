@@ -1,12 +1,11 @@
 #include "player.h"
+#include "entity.h"
+#include "animation.h"
 
-Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
-	animation(texture, imageCount, switchTime) {
+Player::Player(int hp, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
+	animation(texture, imageCount, switchTime), Entity(hp, texture, speed, imageCount, switchTime) {
 	this->speed = speed;
-	maxHp = hp = 1337;
-
 	row = 0;
-	faceRight = true;
 
 	body.setSize(sf::Vector2f(60.0f, 64.0f));
 	body.setPosition(450.0f, 450.0f);
@@ -55,28 +54,4 @@ void Player::update(float deltaTime)
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(velocity.x * deltaTime, velocity.y * deltaTime);	
-}
-
-void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.draw(body);
-}
-
-int Player::GetHp()
-{
-	return hp;
-}
-
-int Player::GetMaxHp()
-{
-	return maxHp;
-}
-
-void Player::SubHp(int damage)
-{
-	if (damage > hp) {
-		hp = 0;
-	}
-	else {
-		hp -= damage;
-	}
 }
