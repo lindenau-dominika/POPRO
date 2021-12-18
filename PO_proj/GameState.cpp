@@ -9,7 +9,7 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     }
 
     // Set up player
-    player = std::make_unique<Player>(1337, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
+    player = std::make_unique<Player>(1337, 1, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
 
     // Set up field
     meme = sf::RectangleShape(sf::Vector2f(200.f, 300.f));
@@ -46,6 +46,20 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     music->setVolume(0.f);
     music->setLoop(true);
     music->play();
+}
+
+void GameState::isDead() const
+{
+   unsigned index = 0;
+for(auto *enemy : this ->activeEnemies)
+{
+    enemy->update(dt, this->mousePosView);
+
+    this->updateCombat(enemy, index, deltaTime);
+    
+}
+
+   if (enemy->get()->hp <= 0) {}
 }
 
 void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {

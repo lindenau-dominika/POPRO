@@ -2,9 +2,10 @@
 #include "entity.h"
 #include "animation.h"
 
-Player::Player(int hp, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
+Player::Player(int hp, int level, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
 	animation(texture, imageCount, switchTime), Entity(hp, texture, speed, imageCount, switchTime) {
 	this->speed = speed;
+	this->level = level;
 	row = 0;
 
 	body.setSize(sf::Vector2f(60.0f, 64.0f));

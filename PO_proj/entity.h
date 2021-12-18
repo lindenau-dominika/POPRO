@@ -23,10 +23,12 @@ public:
 
 	int GetHp();
 	int GetMaxHp();
+	void looseHp();
 	void SubHp(int damage);
 	bool getExists();
 	void kill();
-
+	const bool isDead() const;
+	
 
     //we gotta think about inheritance 
 public:
