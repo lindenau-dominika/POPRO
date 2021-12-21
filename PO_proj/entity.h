@@ -16,6 +16,10 @@ public:
 	{
 		return body.getPosition();
 	}
+
+	void setPosition(sf::Vector2f position) {
+		body.setPosition(position);
+	}
 	Collider GetCollider()
 	{
 		return Collider(body);
@@ -23,7 +27,7 @@ public:
 
 	int GetHp();
 	int GetMaxHp();
-	void looseHp();
+	void loseHp();
 	void SubHp(int damage);
 	bool getExists();
 	void kill();

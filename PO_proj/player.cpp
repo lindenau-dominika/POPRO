@@ -2,13 +2,13 @@
 #include "entity.h"
 #include "animation.h"
 
-Player::Player(int hp, int level, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float deltaTime, float speed) :
+Player::Player(int hp, int level, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed) :
 	animation(texture, imageCount, switchTime), Entity(hp, texture, speed, imageCount, switchTime) {
 	this->speed = speed;
 	this->level = level;
 	row = 0;
 
-	body.setSize(sf::Vector2f(60.0f, 64.0f));
+	body.setSize(sf::Vector2f(32.0f, 38.4f));
 	body.setPosition(450.0f, 450.0f);
 	body.setOrigin(30.0f, 48.0f);
 	body.setTexture(texture);
@@ -50,6 +50,17 @@ void Player::update(float deltaTime)
 	{
 		row = 3;
 	}
+	// float a, b, c, d;
+	// if (body.getPosition().x >= a &&  body.getPosition().y == b)
+	// {
+
+	// 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	// 	body.setPosition(-200.f, -200.f);
+	// }
+	// if (body.getPosition().x == c; body.getPosition().y == d)
+	// {
+	// 	body.setPosition(a, b + 20.f);
+	// }
 
 	
 	animation.Update(row, deltaTime, faceRight);

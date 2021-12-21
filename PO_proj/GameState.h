@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "state.h"
+#include "Teleport.h"
 #include "player.h"
 
 class GameState : public State {
@@ -11,12 +12,14 @@ private:
 	// Assets
 	std::shared_ptr<sf::Texture> playerTexture;
 	std::shared_ptr<sf::Texture> avatarTexture;
+	std::shared_ptr<sf::Texture> groundTexture;
 	std::shared_ptr<sf::Texture> healthBarTexture;
 	std::unique_ptr<sf::Music> music;
 
 	// Game objects
 	std::unique_ptr<Player> player;
 	sf::RectangleShape meme;
+	std::vector<Teleport> teleports;
 	
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;

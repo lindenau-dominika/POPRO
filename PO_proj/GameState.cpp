@@ -1,5 +1,7 @@
 #include "GameState.h"
 #include "StateMachine.h"
+#include "player.h"
+#include "entity.h"
 
 GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(sf::Vector2f(480.0f, 270.0f), sf::Vector2f(960.0f, 540.0f)) {
     // Load player texture
@@ -9,11 +11,18 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     }
 
     // Set up player
-    player = std::make_unique<Player>(1337, 1, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f, 200.0f);
+    player = std::make_unique<Player>(1337, 1, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f);
 
     // Set up field
-    meme = sf::RectangleShape(sf::Vector2f(200.f, 300.f));
+    meme = sf::RectangleShape(sf::Vector2f(614.4f, 614.4f));
+    
+    groundTexture = std::make_shared<sf::Texture>();
+    if (!groundTexture->loadFromFile("assets/basicc.png"))
+    {
+        throw("couldn't load the ground Texture");
+    }
     meme.setPosition(450.0, 450.0);
+    meme.setTexture(groundTexture.get());
 
     //Interface - Healthbar, avatar
     float x = 100 * (static_cast<float>(player->GetHp()) / player->GetMaxHp());
@@ -28,7 +37,6 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     avatar = sf::Sprite(*avatarTexture.get());
     avatar.setScale(0.125, 0.125);
     avatar.setPosition(2.0f, 2.0f);
-
 
     healthBarTexture = std::make_shared<sf::Texture>();
     if (!healthBarTexture->loadFromFile("assets/Healthbar.png")) {
@@ -46,27 +54,31 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     music->setVolume(0.f);
     music->setLoop(true);
     music->play();
+
+    // Teleports
+    teleports.emplace_back(sf::FloatRect(100.f, 100.f, 300.f, 300.f), sf::Vector2f(420.f, 666.f));
 }
 
-void GameState::isDead() const
-{
-   unsigned index = 0;
-for(auto *enemy : this ->activeEnemies)
-{
-    enemy->update(dt, this->mousePosView);
-
-    this->updateCombat(enemy, index, deltaTime);
-    
-}
-
-   if (enemy->get()->hp <= 0) {}
-}
+//void GameState::isDead() const
+//{
+//   unsigned index = 0;
+//for(auto *enemy : this ->activeEnemies)
+//{
+//    enemy->update(dt, this->mousePosView);
+//
+//    this->updateCombat(enemy, index, deltaTime);
+//    
+//}
+//
+//   if (enemy->get()->hp <= 0) {}
+//}
 
 void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Draw world
     target.setView(gameView);
     target.draw(meme);
     target.draw(*player);
+    
 
     // Draw UI
     target.setView(interfaceView);
@@ -93,6 +105,14 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     }
 
     player->update(deltaTime);
+        // auto player_position = player->GetPosition();
+    // if (teleport.IsStandingOnTeleport(player_position)) {
+    for(auto teleport : teleports) {
+        if (player->getBounds().intersects(teleport.GetBounds()))
+        {
+            player->setPosition(teleport.GetExitPosition());
+        } 
+    }
 
     gameView.setCenter(player->GetPosition());
 }

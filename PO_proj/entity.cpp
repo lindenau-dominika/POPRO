@@ -39,22 +39,22 @@ void Entity::SubHp(int damage)
 		hp -= damage;
 	}
 }
-void Entity::looseHp(const int hp)
-{
-	if (this->entity)
-	{
-	this->entity->looseHp(hp);
-	}
-}
-
-const bool Entity::isDead() const
-{
-	if(this->entity)
-	{
-		return this->entity->isDead();
-	}
-	return this-> hp <=0;
-}
+//void Entity::looseHp(const int hp)
+//{
+//	if (this->entity)
+//	{
+//	this->entity->looseHp(hp);
+//	}
+//}
+//
+//const bool Entity::isDead() const
+//{
+//	if(this->entity)
+//	{
+//		return this->entity->isDead();
+//	}
+//	return this-> hp <=0;
+//}
 
 void Entity::OnCollision(sf::Vector2f direction)
 {
@@ -78,4 +78,8 @@ void Entity::OnCollision(sf::Vector2f direction)
 		//top
 		velocity.y = 0.0f;
 	}
+}
+
+const sf::FloatRect Entity::getBounds() const {
+	return bound;
 }
