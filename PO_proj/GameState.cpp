@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "player.h"
 #include "entity.h"
+#include <iostream>
 
 GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(sf::Vector2f(480.0f, 270.0f), sf::Vector2f(960.0f, 540.0f)) {
     // Load player texture
@@ -9,7 +10,12 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     if (!playerTexture->loadFromFile("assets/player.png")) {
         throw("Couldn't load the player texture");
     }
+    enemyTexture = std::make_shared<sf::Texture>();
+    if (!enemyTexture->loadFromFile("assets/enemo.png")) {
+        throw("Couldn't load the enemy texture");
+    }
 
+    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), sf::Vector2u(8, 1), sf::Vector2f(500.f, 500.f), 20.0f, 0.07f));
     // Set up player
     player = std::make_unique<Player>(1337, 1, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f);
 
@@ -78,7 +84,9 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.setView(gameView);
     target.draw(meme);
     target.draw(*player);
-    
+    for (auto& enemy : enemies) {
+        target.draw(*enemy);
+    }
 
     // Draw UI
     target.setView(interfaceView);
@@ -105,8 +113,16 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     }
 
     player->update(deltaTime);
-        // auto player_position = player->GetPosition();
-    // if (teleport.IsStandingOnTeleport(player_position)) {
+    for(auto& enemy : enemies) {
+        enemy->update(deltaTime);
+        sf::Vector2f direction;
+        if (enemy->GetCollider().CheckCollision(player->GetCollider(), direction, 1.0f))
+        {
+            std::cout << "HEYO" << std::endl;
+            player->OnCollision(direction);
+        }
+    }
+
     for(auto teleport : teleports) {
         if (player->getBounds().intersects(teleport.GetBounds()))
         {

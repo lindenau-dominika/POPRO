@@ -27,7 +27,7 @@ public:
 
 	int GetHp();
 	int GetMaxHp();
-	void loseHp();
+	//00void loseHp();
 	void SubHp(int damage);
 	bool getExists();
 	void kill();

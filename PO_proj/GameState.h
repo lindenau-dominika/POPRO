@@ -6,11 +6,13 @@
 #include "state.h"
 #include "Teleport.h"
 #include "player.h"
+#include "enemy.h"
 
 class GameState : public State {
 private:
 	// Assets
 	std::shared_ptr<sf::Texture> playerTexture;
+	std::shared_ptr<sf::Texture> enemyTexture;
 	std::shared_ptr<sf::Texture> avatarTexture;
 	std::shared_ptr<sf::Texture> groundTexture;
 	std::shared_ptr<sf::Texture> healthBarTexture;
@@ -18,6 +20,7 @@ private:
 
 	// Game objects
 	std::unique_ptr<Player> player;
+	std::vector<std::unique_ptr<Enemy>> enemies;
 	sf::RectangleShape meme;
 	std::vector<Teleport> teleports;
 	
