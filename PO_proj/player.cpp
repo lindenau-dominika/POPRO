@@ -19,6 +19,11 @@ Player::~Player()
 
 }
 
+void Player::Move(sf::Vector2i direction)
+{
+	this->direction = direction;
+}
+
 //declaring the movement
 void Player::update(float deltaTime) 
 {
@@ -26,41 +31,64 @@ void Player::update(float deltaTime)
 	velocity.x = 0.0f;
 	velocity.y = 0.0f;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		velocity.x = -speed;
-		animation.ChangeAnimation(AnimationType::WalkingLeft);
+	if (lastDirection != direction) {
+		if (direction.x == 0) {
+			// Moving down vertically
+			if (direction.y > 0) {
+				animation.ChangeAnimation(AnimationType::WalkingDown);
+			}
+			// Standing still
+			else if (direction.y == 0) {
+				if (lastDirection.y < 0) {
+					animation.ChangeAnimation(AnimationType::StandingUp);
+				}
+				else {
+					animation.ChangeAnimation(AnimationType::StandingDown);
+				}
+			}
+			// Moving up vertically
+			else {
+				animation.ChangeAnimation(AnimationType::WalkingUp);
+			}
+		}
+		else if (direction.x > 0) {
+			// Moving down-right
+			if (direction.y > 0) {
+				animation.ChangeAnimation(AnimationType::WalkingDown);
+			}
+			// Moving right horizontally
+			else if (direction.y == 0) {
+				animation.ChangeAnimation(AnimationType::WalkingRight);
+			}
+			// Moving up-right
+			else {
+				animation.ChangeAnimation(AnimationType::WalkingUp);
+			}
+		}
+		else {
+			// Moving down-left
+			if (direction.y > 0) {
+				animation.ChangeAnimation(AnimationType::WalkingDown);
+			}
+			// Moving left horizontally
+			else if (direction.y == 0) {
+				animation.ChangeAnimation(AnimationType::WalkingLeft);
+			}
+			// Moving up-left
+			else {
+				animation.ChangeAnimation(AnimationType::WalkingUp);
+			}
+		}
+		lastDirection = direction;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		velocity.x = speed;
-		animation.ChangeAnimation(AnimationType::WalkingRight);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		velocity.y = -speed;
-		animation.ChangeAnimation(AnimationType::WalkingUp);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		velocity.y = speed;
-		animation.ChangeAnimation(AnimationType::WalkingDown);
-	}
-	if (abs(velocity.x) < 0.1f && abs(velocity.y) < 0.1f)
-	{
-		animation.ChangeAnimation(AnimationType::StandingDown);
-	}
-	// float a, b, c, d;
-	// if (body.getPosition().x >= a &&  body.getPosition().y == b)
-	// {
 
-	// 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-	// 	body.setPosition(-200.f, -200.f);
-	// }
-	// if (body.getPosition().x == c; body.getPosition().y == d)
-	// {
-	// 	body.setPosition(a, b + 20.f);
-	// }
+	float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
+	sf::Vector2f normalizedDirection(0, 0);
+	if (magnitude != 0) {
+		normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
+	}
+	velocity.x = normalizedDirection.x * speed;
+	velocity.y = normalizedDirection.y * speed;
 
 	animation.Update(deltaTime);
 	body.setTextureRect(animation.GetUVRect());

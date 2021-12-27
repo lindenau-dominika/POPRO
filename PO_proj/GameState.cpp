@@ -112,13 +112,32 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
         }
     }
 
+    // Player movement
+    sf::Vector2i playerDirection;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        playerDirection.x += -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        playerDirection.x += 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        playerDirection.y += -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        playerDirection.y += 1;
+    }
+
+    player->Move(playerDirection);
     player->update(deltaTime);
     for(auto& enemy : enemies) {
         enemy->update(deltaTime);
         sf::Vector2f direction;
         if (enemy->GetCollider().CheckCollision(player->GetCollider(), direction, 1.0f))
         {
-            std::cout << "HEYO" << std::endl;
             player->OnCollision(direction);
         }
     }
