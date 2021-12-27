@@ -2,8 +2,8 @@
 #include "entity.h"
 #include "animation.h"
 
-Player::Player(int hp, int level, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed) :
-	animation(texture, imageCount, switchTime), Entity(hp, texture, speed, imageCount, switchTime) {
+Player::Player(int hp, int level, sf::Texture* texture, int animations, int frames, float switchTime, float speed) :
+	animation(texture->getSize(), animations, frames, switchTime), Entity(hp, texture, speed, switchTime) {
 	this->speed = speed;
 	this->level = level;
 	row = 0;
@@ -29,26 +29,26 @@ void Player::update(float deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		velocity.x = -speed;
-		row = 5;
+		animation.ChangeAnimation(AnimationType::WalkingLeft);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		velocity.x = speed;
-		row = 0;
+		animation.ChangeAnimation(AnimationType::WalkingRight);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		velocity.y = -speed;
-		row = 2;
+		animation.ChangeAnimation(AnimationType::WalkingUp);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		velocity.y = speed;
-		row = 1;
+		animation.ChangeAnimation(AnimationType::WalkingDown);
 	}
 	if (abs(velocity.x) < 0.1f && abs(velocity.y) < 0.1f)
 	{
-		row = 3;
+		animation.ChangeAnimation(AnimationType::StandingDown);
 	}
 	// float a, b, c, d;
 	// if (body.getPosition().x >= a &&  body.getPosition().y == b)
@@ -62,8 +62,7 @@ void Player::update(float deltaTime)
 	// 	body.setPosition(a, b + 20.f);
 	// }
 
-	
-	animation.Update(row, deltaTime, faceRight);
-	body.setTextureRect(animation.uvRect);
+	animation.Update(deltaTime);
+	body.setTextureRect(animation.GetUVRect());
 	body.move(velocity.x * deltaTime, velocity.y * deltaTime);	
 }

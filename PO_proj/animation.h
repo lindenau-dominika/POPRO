@@ -1,22 +1,48 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+namespace AnimationType {
+	enum AnimationType {
+		// StandingDown = 0,
+		// StandingUp = 1,
+		// StandingLeft = 2,
+		// StandingRight = 3,
+		// WalkingDown = 4,
+		// WalkingUp = 5,
+		// WalkingLeft = 6,
+		// WalkingRight = 7,
+		// Default = StandingDown,
+
+		// Temporary values
+		StandingDown = 3,
+		StandingUp = 4,
+		StandingLeft = 3,
+		StandingRight = 3,
+		WalkingDown = 1,
+		WalkingUp = 2,
+		WalkingLeft = 5,
+		WalkingRight = 0,
+		Default = StandingDown,
+	};
+}
 
 class Animation
 {
 public:
-	Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
-	~Animation();
+	Animation(sf::Vector2u textureSize, int animations, int frames, float switchTime);
 
-	//metoda do aktualizowania animacji
-	void Update(int row, float deltaTime, bool faceRight);
-	sf::IntRect uvRect;
-	void setSmooth(bool smooth);
+	void Update(float deltaTime);
+	void ChangeAnimation(AnimationType::AnimationType animationType);
+	sf::IntRect GetUVRect();
 
 private:
-	sf::Vector2u imageCount;
-	sf::Vector2u currentImage;
-	
-	float totalTime;
+	int animations;
+	int frames;
 	float switchTime;
+	float totalTime = 0.0f;
+	
+	AnimationType::AnimationType currentAnimation = AnimationType::Default;
+	int currentFrame = 0;
+
+	sf::IntRect uvRect;
 };
 

@@ -6,7 +6,7 @@
 class Entity : public sf::Drawable
 {
 public:
-	Entity(int hp, sf::Texture* texture, float speed, sf::Vector2u imageCount, float switchTime);
+	Entity(int hp, sf::Texture* texture, float speed, float switchTime);
 	~Entity();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void OnCollision(sf::Vector2f direction);

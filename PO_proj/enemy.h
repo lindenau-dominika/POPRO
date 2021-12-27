@@ -8,7 +8,7 @@
 class Enemy : public Entity
 {
 public:
-	Enemy(int hp, sf::Texture* texture, sf::Vector2u imageCount, sf::Vector2f position, float speed, float switchTime);
+	Enemy(int hp, sf::Texture* texture, int animations, int frames, sf::Vector2f position, float speed, float switchTime);
 	~Enemy();
 	/*virtual const bool isDead() const;*/
 	void update(float deltaTime);

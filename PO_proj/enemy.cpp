@@ -1,7 +1,7 @@
 #include "enemy.h"
 
-Enemy::Enemy(int hp, sf::Texture* texture, sf::Vector2u imageCount, sf::Vector2f position, float speed, float switchTime) :
-animation(texture, imageCount, switchTime), Entity(hp, texture, speed, imageCount, switchTime) {
+Enemy::Enemy(int hp, sf::Texture* texture, int animations, int frames, sf::Vector2f position, float speed, float switchTime) :
+animation(texture->getSize(), animations, frames, switchTime), Entity(hp, texture, speed, switchTime) {
 	this->speed = speed;
 	row = 0;
 
@@ -28,7 +28,7 @@ void Enemy::update(float deltaTime) {
 	}
 
 
-    animation.Update(row, deltaTime, faceRight);
-    body.setTextureRect(animation.uvRect);
+    animation.Update(deltaTime);
+    body.setTextureRect(animation.GetUVRect());
     body.move(velocity.x * deltaTime, velocity.y * deltaTime);
 }

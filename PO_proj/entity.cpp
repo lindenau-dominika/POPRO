@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "animation.h"
 
-Entity::Entity(int hp, sf::Texture* texture, float speed, sf::Vector2u imageCount, float switchTime)
+Entity::Entity(int hp, sf::Texture* texture, float speed, float switchTime)
 {
 	this->speed = speed;
 	row = 0;

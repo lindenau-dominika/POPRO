@@ -1,55 +1,48 @@
 #include "animation.h"
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
+Animation::Animation(sf::Vector2u textureSize, int animations, int frames, float switchTime) : switchTime(switchTime), animations(animations), frames(frames)
 {
-	//just some cute pointers that everybody loves and admire
-	this->imageCount = imageCount;
-	this->switchTime = switchTime;
-	totalTime = 0.0f;
-	currentImage.x = 0;
-	currentImage.y = 0;
-
-	//setting the proper frame for an object
-	uvRect.width = texture->getSize().x / float(imageCount.x);
-	uvRect.height = texture->getSize().y / float(imageCount.y);
+	uvRect.width = textureSize.x / frames;
+	uvRect.height = textureSize.y / animations;
 }
 
-Animation::~Animation()
+void Animation::Update(float deltaTime)
 {
-
-}
-void Animation::Update(int row, float deltaTime, bool faceRight)
-{
-	currentImage.y = row;
 	totalTime += deltaTime;
 
 	if (totalTime >= switchTime)
 	{
 		totalTime -= switchTime;
-		currentImage.x++;
+		currentFrame += 1;
 
-		if (currentImage.x >= imageCount.x)
+		// Wrap around if we went past last frame
+		if (currentFrame >= frames)
 		{
-			currentImage.x = 0;
-
-		}
-		if (currentImage.y >= imageCount.y)
-		{
-			currentImage.y = 0;
+			currentFrame = 0;
 
 		}
 	}
-	uvRect.left = currentImage.x * uvRect.width;
-	uvRect.top = currentImage.y * uvRect.height;
+	uvRect.left = currentFrame * uvRect.width;
+	uvRect.top = currentAnimation * uvRect.height;
+}
 
-	if (faceRight)
-	{
-		uvRect.left = currentImage.x * abs(uvRect.width);
-		uvRect.width = abs(uvRect.width);
-	}
-	else
-	{
-		uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
-		uvRect.width = -abs(uvRect.width);
+void Animation::ChangeAnimation(AnimationType::AnimationType animationType)
+{
+	if (animationType != currentAnimation) {
+		// Revert to default animation if we try to use non-existing animation
+		if (currentAnimation >= animations)
+		{
+			currentAnimation = AnimationType::Default;
+		}
+
+		totalTime = 0;
+		currentAnimation = animationType;
+		currentFrame = 0;
 	}
 }
+
+sf::IntRect Animation::GetUVRect()
+{
+	return uvRect;
+}
+

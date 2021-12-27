@@ -15,9 +15,9 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
         throw("Couldn't load the enemy texture");
     }
 
-    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), sf::Vector2u(8, 1), sf::Vector2f(500.f, 500.f), 20.0f, 0.07f));
+    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), 8, 8, sf::Vector2f(500.f, 500.f), 20.0f, 0.07f));
     // Set up player
-    player = std::make_unique<Player>(1337, 1, playerTexture.get(), sf::Vector2u(8, 6), 0.07f, 200.0f);
+    player = std::make_unique<Player>(1337, 1, playerTexture.get(), 6, 8, 0.07f, 200.0f);
 
     // Set up field
     meme = sf::RectangleShape(sf::Vector2f(614.4f, 614.4f));
