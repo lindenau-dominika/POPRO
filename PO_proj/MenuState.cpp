@@ -11,11 +11,22 @@ MenuState::MenuState(StateMachine& machine, const std::string& title, sf::Font &
 	this->title.setCharacterSize(TITLE_SIZE);
 	this->title.setFillColor(TITLE_COLOR);
 	this->title.setPosition(TITLE_POSITION);
+
+	menuTexture = std::make_shared<sf::Texture>();
+    if (!menuTexture->loadFromFile("assets/menu.png"))
+    {
+        throw("couldn't load the menu Texture");
+    }
+	menuBackground = sf::RectangleShape(sf::Vector2f(1820.0f, 1024.0f));
+	menuBackground.setPosition(0.0, 0.0);
+    menuBackground.setTexture(menuTexture.get());
+
 }
 
 void MenuState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.setView(menuView);
 	target.draw(title);
+	target.draw(menuBackground);
 	for (auto& option : options) {
 		target.draw(option);
 	}
@@ -70,6 +81,7 @@ void MenuState::add_option(const std::string& contents, const sf::Vector2f posit
 	text.setFont(font);
 	text.setString(contents);
 	text.setPosition(position);
+	text.setOutlineThickness(5);
 
 	// Select new option by default if there are no other options
 	if (options.size() == 0) {

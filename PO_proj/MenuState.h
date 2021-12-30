@@ -20,6 +20,8 @@ private:
 	std::vector<sf::Text> options;
 	sf::View menuView;
 	void select(int index);
+	std::shared_ptr<sf::Texture> menuTexture;
+	sf::RectangleShape menuBackground;
 public:
 	MenuState(StateMachine& machine, const std::string& title, sf::Font &font);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
