@@ -38,5 +38,8 @@ private:
 	std::unordered_map<ResourceIDs::Textures, std::shared_ptr<sf::Texture>> textures;
 	std::unordered_map<ResourceIDs::Fonts, std::shared_ptr<sf::Font>> fonts;
 	std::unordered_map<ResourceIDs::Music, std::shared_ptr<sf::Music>> music;
-
+ 
+	static std::unordered_map<ResourceIDs::Textures, std::string> texturePaths;
+	static std::unordered_map<ResourceIDs::Fonts, std::string> fontPaths;
+	static std::unordered_map<ResourceIDs::Music, std::string> musicPaths;
 };

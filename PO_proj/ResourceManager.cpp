@@ -1,5 +1,23 @@
 #include "ResourceManager.h"
 
+std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::texturePaths = {
+	{ResourceIDs::Textures::MenuBackground, "assets/menu.png"},
+	{ResourceIDs::Textures::PlayerSpriteSheet, "assets/player.png"},
+	{ResourceIDs::Textures::PlayerAvatar, "assets/interface.png"},
+	{ResourceIDs::Textures::HealthBar, "assets/healthbar.png"},
+	{ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png"},
+	{ResourceIDs::Textures::Ground, "assets/basicc.png"}
+};
+
+std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {
+	{ResourceIDs::Fonts::General, "assets/arial.ttf"}
+};
+
+std::unordered_map<ResourceIDs::Music, std::string> ResourceManager::musicPaths = {
+	{ResourceIDs::Music::Overworld, "assets/soundtrack.wav"}
+};
+
+
 std::shared_ptr<sf::Texture> ResourceManager::GetTexture(ResourceIDs::Textures id) const
 {
 	return textures.at(id);
@@ -18,18 +36,19 @@ std::shared_ptr<sf::Music> ResourceManager::GetMusic(ResourceIDs::Music id) cons
 void ResourceManager::LoadAll()
 {
 	// Load textures
-	LoadTexture(ResourceIDs::Textures::MenuBackground, "assets/menu.png");
-	LoadTexture(ResourceIDs::Textures::PlayerSpriteSheet, "assets/player.png");
-	LoadTexture(ResourceIDs::Textures::PlayerAvatar, "assets/interface.png");
-	LoadTexture(ResourceIDs::Textures::HealthBar, "assets/healthbar.png");
-	LoadTexture(ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png");
-	LoadTexture(ResourceIDs::Textures::Ground, "assets/basicc.png");
+	for (auto const& [id, path] : texturePaths) {
+		LoadTexture(id, path);
+	}
 
 	// Load fonts
-	LoadFont(ResourceIDs::Fonts::General, "assets/arial.ttf");
+	for (auto const& [id, path] : fontPaths) {
+		LoadFont(id, path);
+	}
 
 	// Load music
-	LoadMusic(ResourceIDs::Music::Overworld, "assets/soundtrack.wav");
+	for (auto const& [id, path] : musicPaths) {
+		LoadMusic(id, path);
+	}
 }
 
 void ResourceManager::LoadTexture(ResourceIDs::Textures id, std::string path)
