@@ -67,6 +67,24 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     music->setLoop(true);
     music->play();
 
+    // Text
+    font = std::make_unique<sf::Font>();
+    if (!font->loadFromFile("assets/arial.ttf")) {
+        throw("couldn't load the font");
+    }
+
+
+    // Set up FPS text
+    fpsText.setFont(*font);
+    sf::Vector2f uiCenter = interfaceView.getCenter();
+    sf::Vector2f uiSize = interfaceView.getSize();
+    
+    fpsText.setString("X FPS");
+    fpsText.setOrigin(0, fpsText.getLocalBounds().height);
+    fpsText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2);
+    fpsText.setCharacterSize(10);
+
+
     // Teleports
     teleports.emplace_back(sf::FloatRect(100.f, 100.f, 300.f, 300.f), sf::Vector2f(420.f, 666.f));
 }
@@ -94,10 +112,35 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         target.draw(*enemy);
     }
 
+    // Draw teleports in debug mode
+    if (GetDebugMode()) {
+        for (auto& teleport : teleports) {
+            auto r = teleport.GetBounds();
+            sf::RectangleShape tpRect(sf::Vector2f(r.width, r.height));
+            tpRect.setPosition(r.left, r.top);
+            tpRect.setFillColor(sf::Color(128, 128, 128, 255));
+            tpRect.setOutlineThickness(1);
+            tpRect.setOutlineColor(sf::Color::White);
+            target.draw(tpRect);
+
+            sf::CircleShape exit(3.0);
+            exit.setPosition(teleport.GetExitPosition());
+            tpRect.setFillColor(sf::Color(128, 128, 128, 255));
+            tpRect.setOutlineThickness(1);
+            tpRect.setOutlineColor(sf::Color::White);
+            target.draw(exit);
+        }
+    }
+
     // Draw UI
     target.setView(interfaceView); 
     target.draw(healthBar);
     target.draw(avatar);
+
+    // Draw FPS counter in debug mode
+    if (GetDebugMode()) {
+        target.draw(fpsText);
+    }
 }
 
 void GameState::update(sf::RenderWindow& window, float deltaTime) {
@@ -112,6 +155,10 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
             if (event.key.code == sf::Keyboard::Escape) {
                 parent_machine.pop_state();
                 return;
+            }
+
+            if (event.key.code == sf::Keyboard::B) {
+                SetDebugMode(!GetDebugMode());
             }
         }
     }
@@ -142,7 +189,7 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
         enemy->HandleCollision(*player);
     }
 
-    for(auto teleport : teleports) {
+    for(auto& teleport : teleports) {
         if (player->GetBounds().intersects(teleport.GetBounds()))
         {
             player->SetPosition(teleport.GetExitPosition());
@@ -150,4 +197,34 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     }
 
     gameView.setCenter(player->GetPosition());
+    fpsText.setString(std::to_string(static_cast<int>(1 / deltaTime)) + " FPS");
+}
+
+
+bool GameState::GetDebugMode() const
+{
+    return debugMode;
+}
+
+void GameState::SetDebugMode(bool debugMode)
+{
+    this->debugMode = debugMode;
+    if (debugMode) {
+        player->GetBody()->setOutlineThickness(1);
+        for (auto& enemy : enemies) {
+            enemy->GetBody()->setOutlineThickness(1);
+        }
+        for (auto& tp : teleports) {
+            
+        }
+    }
+    else {
+        player->GetBody()->setOutlineThickness(0);
+        for (auto& enemy : enemies) {
+            enemy->GetBody()->setOutlineThickness(0);
+        }
+        for (auto& tp : teleports) {
+
+        }
+    }
 }
