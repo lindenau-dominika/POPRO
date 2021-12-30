@@ -2,6 +2,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "state.h"
+#include "ResourceManager.h"
 
 const sf::Color SELECTED_COLOR = sf::Color::White;
 const int SELECTED_SIZE = 100;
@@ -15,15 +16,15 @@ const sf::Vector2f TITLE_POSITION = sf::Vector2f(220.0f, 50.0f);
 class MenuState : public State {
 private:
 	int selected = 0;
-	sf::Font font;
 	sf::Text title;
 	std::vector<sf::Text> options;
 	sf::View menuView;
 	void select(int index);
-	std::shared_ptr<sf::Texture> menuTexture;
 	sf::RectangleShape menuBackground;
+
+	std::shared_ptr<ResourceManager> resourceManager;
 public:
-	MenuState(StateMachine& machine, const std::string& title, sf::Font &font);
+	MenuState(StateMachine& machine, const std::string& title, std::shared_ptr<ResourceManager> resourceManager);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void update(sf::RenderWindow& window, float deltaTime);
 	void add_option(const std::string& contents, const sf::Vector2f position);

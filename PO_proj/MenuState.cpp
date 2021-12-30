@@ -4,22 +4,18 @@
 #include "StateMachine.h"
 #include <memory>
 
-MenuState::MenuState(StateMachine& machine, const std::string& title, sf::Font &font) : State(machine), font(font), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
+MenuState::MenuState(StateMachine& machine, const std::string& title, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
 {
-	this->title.setFont(font);
+	this->title.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General).get());
 	this->title.setString(title);
 	this->title.setCharacterSize(TITLE_SIZE);
 	this->title.setFillColor(TITLE_COLOR);
 	this->title.setPosition(TITLE_POSITION);
 
-	menuTexture = std::make_shared<sf::Texture>();
-    if (!menuTexture->loadFromFile("assets/menu.png"))
-    {
-        throw("couldn't load the menu Texture");
-    }
+
 	menuBackground = sf::RectangleShape(sf::Vector2f(1820.0f, 1024.0f));
 	menuBackground.setPosition(0.0, 0.0);
-    menuBackground.setTexture(menuTexture.get());
+    menuBackground.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::MenuBackground).get());
 
 }
 
@@ -59,12 +55,12 @@ void MenuState::update(sf::RenderWindow& window, float deltaTime)
                 int selected_option = get_selected_option();
                 if (selected_option == 0) {
 					// Enter the play state
-					GameState gameState(parent_machine);
+					GameState gameState(parent_machine, resourceManager);
 					parent_machine.push_state(std::make_unique<GameState>(std::move(gameState)));
                 }
                 else if (selected_option == 1) {
                     // Options menu state
-					SettingsState settingsState(parent_machine, "U dont need this but ok. its W S A D. glhf", font);
+					SettingsState settingsState(parent_machine, "U dont need this but ok. its W S A D. glhf", resourceManager);
 					parent_machine.push_state(std::make_unique<SettingsState>(std::move(settingsState)));
                 }
                 else if (selected_option == 2) {
@@ -78,7 +74,7 @@ void MenuState::update(sf::RenderWindow& window, float deltaTime)
 
 void MenuState::add_option(const std::string& contents, const sf::Vector2f position) {
 	sf::Text text;
-	text.setFont(font);
+	text.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General));
 	text.setString(contents);
 	text.setPosition(position);
 	text.setOutlineThickness(5);

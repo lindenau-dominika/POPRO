@@ -169,6 +169,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PO_proj.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SettingsState.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Teleport.cpp" />
@@ -182,6 +183,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SettingsState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />

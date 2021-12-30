@@ -4,36 +4,23 @@
 #include "entity.h"
 #include <iostream>
 
-GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(sf::Vector2f(480.0f, 270.0f), sf::Vector2f(960.0f, 540.0f)) {
-    // Load player texture
-    playerTexture = std::make_shared<sf::Texture>();
-    if (!playerTexture->loadFromFile("assets/player.png")) {
-        throw("Couldn't load the player texture");
-    }
-    enemyTexture = std::make_shared<sf::Texture>();
-    if (!enemyTexture->loadFromFile("assets/enemo.png")) {
-        throw("Couldn't load the enemy texture");
-    }
-
+GameState::GameState(StateMachine& machine, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager), 
+gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(sf::Vector2f(480.0f, 270.0f), sf::Vector2f(960.0f, 540.0f)) {
     // Set up enemies
+    auto enemyTexture = resourceManager->GetTexture(ResourceIDs::Textures::EnemySpriteSheet);
     Animation enemyAnimation(enemyTexture->getSize(), 8, 8, 0.07f);
     enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), enemyAnimation, sf::Vector2f(500.f, 500.f), 20.0f));
     enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), enemyAnimation, sf::Vector2f(800.f, 500.f), 20.0f));
 
     // Set up player
+    auto playerTexture = resourceManager->GetTexture(ResourceIDs::Textures::PlayerSpriteSheet);
     Animation playerAnimation(playerTexture->getSize(), 6, 8, 0.07f);
     player = std::make_unique<Player>(1337, 1, playerTexture.get(), playerAnimation, 200.0f);
 
     // Set up field
     meme = sf::RectangleShape(sf::Vector2f(614.4f, 614.4f));
-    
-    groundTexture = std::make_shared<sf::Texture>();
-    if (!groundTexture->loadFromFile("assets/basicc.png"))
-    {
-        throw("couldn't load the ground Texture");
-    }
     meme.setPosition(450.0, 450.0);
-    meme.setTexture(groundTexture.get());
+    meme.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::Ground).get());
 
     //Interface - Healthbar, 
     // player->GetHp()) / player->GetMaxHp()
@@ -42,37 +29,22 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     healthBar = sf::RectangleShape(sf::Vector2f(x * 2, 17.f));
  
     // Load interface textures
-    avatarTexture = std::make_shared<sf::Texture>();
-    if (!avatarTexture->loadFromFile("assets/interface.png")) {
-        throw("Couldn't load the avatar texture");
-    }
-    avatar = sf::Sprite(*avatarTexture.get());
+    avatar = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::PlayerAvatar));
     avatar.setScale(0.125, 0.125);
     avatar.setPosition(2.0f, 2.0f);
 
-    healthBarTexture = std::make_shared<sf::Texture>();
-    if (!healthBarTexture->loadFromFile("assets/Healthbar.png")) {
-        throw("Couldn't load the healthbar texture");
-    }
+    healthBar.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::HealthBar).get());
     healthBar.setScale(0.68f, 1.f);
-    healthBar.setTexture(healthBarTexture.get());
     healthBar.setPosition(112.0f, 15.f);
     
     // Load music
-    music = std::make_unique<sf::Music>();
-    if (!music->openFromFile("assets/soundtrack.wav")) {
-        throw("Couldn't load the soundtrack");
-    }
+    auto music = resourceManager->GetMusic(ResourceIDs::Music::Overworld);
     music->setVolume(0.f);
     music->setLoop(true);
     music->play();
 
     // Text
-    font = std::make_unique<sf::Font>();
-    if (!font->loadFromFile("assets/arial.ttf")) {
-        throw("couldn't load the font");
-    }
-
+    auto font = resourceManager->GetFont(ResourceIDs::Fonts::General);
 
     // Set up FPS text
     fpsText.setFont(*font);

@@ -1,8 +1,8 @@
 #include "SettingsState.h"
 #include "StateMachine.h"
 
-SettingsState::SettingsState(StateMachine& machine, const std::string& contents, sf::Font& font) : State(machine), font(font) {
-    text.setFont(font);
+SettingsState::SettingsState(StateMachine& machine, const std::string& contents, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager) {
+    text.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General));
     text.setString("U dont need this but ok. its W S A D. glhf");
     text.setCharacterSize(60);
     text.setFillColor(sf::Color::White);
