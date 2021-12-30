@@ -8,18 +8,10 @@
 class Enemy : public Entity
 {
 public:
-	Enemy(int hp, sf::Texture* texture, int animations, int frames, sf::Vector2f position, float speed, float switchTime);
+	Enemy(int hp, sf::Texture* texture, Animation animation, sf::Vector2f position, float speed);
 	~Enemy();
-	/*virtual const bool isDead() const;*/
-	void update(float deltaTime);
+	virtual void update(float deltaTime) override;
 
 private:
 	Animation animation;
 };
-
-
-
-//class Druid : public Enemy
-//{
-//    Druid(int hp);
-//};

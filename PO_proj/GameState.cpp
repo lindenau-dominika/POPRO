@@ -15,9 +15,14 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
         throw("Couldn't load the enemy texture");
     }
 
-    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), 8, 8, sf::Vector2f(500.f, 500.f), 20.0f, 0.07f));
+    // Set up enemies
+    Animation enemyAnimation(enemyTexture->getSize(), 8, 8, 0.07f);
+    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), enemyAnimation, sf::Vector2f(500.f, 500.f), 20.0f));
+    enemies.emplace_back(std::make_unique<Enemy>(1377, enemyTexture.get(), enemyAnimation, sf::Vector2f(800.f, 500.f), 20.0f));
+
     // Set up player
-    player = std::make_unique<Player>(1337, 1, playerTexture.get(), 6, 8, 0.07f, 200.0f);
+    Animation playerAnimation(playerTexture->getSize(), 6, 8, 0.07f);
+    player = std::make_unique<Player>(1337, 1, playerTexture.get(), playerAnimation, 200.0f);
 
     // Set up field
     meme = sf::RectangleShape(sf::Vector2f(614.4f, 614.4f));
@@ -30,8 +35,9 @@ GameState::GameState(StateMachine& machine) : State(machine), gameView(sf::Vecto
     meme.setPosition(450.0, 450.0);
     meme.setTexture(groundTexture.get());
 
-    //Interface - Healthbar, avatar
-    float x = 100 * (static_cast<float>(player->GetHp()) / player->GetMaxHp());
+    //Interface - Healthbar, 
+    // player->GetHp()) / player->GetMaxHp()
+    float x = 100 * (static_cast<float>(0.5/1.0));
     //avatar = sf::RectangleShape(sf::Vector2f(80.f, 95.f));
     healthBar = sf::RectangleShape(sf::Vector2f(x * 2, 17.f));
  
@@ -89,9 +95,7 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     }
 
     // Draw UI
-    target.setView(interfaceView);
-   
-    
+    target.setView(interfaceView); 
     target.draw(healthBar);
     target.draw(avatar);
 }
@@ -135,17 +139,13 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     player->update(deltaTime);
     for(auto& enemy : enemies) {
         enemy->update(deltaTime);
-        sf::Vector2f direction;
-        if (enemy->GetCollider().CheckCollision(player->GetCollider(), direction, 1.0f))
-        {
-            player->OnCollision(direction);
-        }
+        enemy->HandleCollision(*player);
     }
 
     for(auto teleport : teleports) {
-        if (player->getBounds().intersects(teleport.GetBounds()))
+        if (player->GetBounds().intersects(teleport.GetBounds()))
         {
-            player->setPosition(teleport.GetExitPosition());
+            player->SetPosition(teleport.GetExitPosition());
         } 
     }
 

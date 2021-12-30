@@ -1,15 +1,12 @@
 #include "enemy.h"
 
-Enemy::Enemy(int hp, sf::Texture* texture, int animations, int frames, sf::Vector2f position, float speed, float switchTime) :
-animation(texture->getSize(), animations, frames, switchTime), Entity(hp, texture, speed, switchTime) {
-	this->speed = speed;
-	row = 0;
-
-	body.setSize(sf::Vector2f(20.0f, 20.f));
-    body.setPosition(position);
-	body.setOrigin(30.0f, 48.0f);
-	body.setTexture(texture);
-	velocity.x = speed;
+Enemy::Enemy(int hp, sf::Texture* texture, Animation animation, sf::Vector2f position, float speed) :
+animation(animation), Entity(texture, speed) {
+	GetBody()->setSize(sf::Vector2f(20.0f, 20.f));
+    GetBody()->setPosition(position);
+	GetBody()->setOrigin(30.0f, 48.0f);
+	GetBody()->setTexture(texture);
+	SetVelocity(sf::Vector2f(GetSpeed(), 0));
 }
 
 
@@ -17,18 +14,17 @@ Enemy::~Enemy() {
 }
 
 void Enemy::update(float deltaTime) {
-
-	if (body.getPosition().x >= 600.0f)
+	if (GetBody()->getPosition().x >= 600.0f)
 	{
-		velocity.x = -speed;
+		SetVelocity(sf::Vector2f(-GetSpeed(), 0)); 
 	}
-	if (body.getPosition().x <= 450.0f)
+	if (GetBody()->getPosition().x <= 450.0f)
 	{
-		velocity.x = speed;
+		SetVelocity(sf::Vector2f(GetSpeed(), 0));
 	}
-
+	
 
     animation.Update(deltaTime);
-    body.setTextureRect(animation.GetUVRect());
-    body.move(velocity.x * deltaTime, velocity.y * deltaTime);
+    GetBody()->setTextureRect(animation.GetUVRect());
+    GetBody()->move(GetVelocity().x * deltaTime, GetVelocity().y * deltaTime);
 }
