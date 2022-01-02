@@ -6,9 +6,8 @@ Player::Player(int hp, int level, sf::Texture* texture, Animation animation, flo
 	animation(animation), Entity(texture, speed) {
 	this->level = level;
 
-
-	GetBody()->setSize(sf::Vector2f(32.0f, 38.4f));
-	GetBody()->setPosition(450.0f, 450.0f);
+	GetBody()->setSize(sf::Vector2f(40.0, 56.0));
+	GetBody()->setPosition(1450.0f, 1450.0f);
 	GetBody()->setTexture(texture);
 	GetBody()->setOrigin(GetBody()->getSize().x / 2, GetBody()->getSize().y / 2);
 }
@@ -29,48 +28,48 @@ void Player::update(float deltaTime)
 		if (direction.x == 0) {
 			// Moving down vertically
 			if (direction.y > 0) {
-				animation.ChangeAnimation(AnimationType::WalkingDown);
+				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Standing still
 			else if (direction.y == 0) {
 				if (lastDirection.y < 0) {
-					animation.ChangeAnimation(AnimationType::StandingUp);
+					animation.ChangeAnimation(AnimationType::EntityStandingUp);
 				}
 				else {
-					animation.ChangeAnimation(AnimationType::StandingDown);
+					animation.ChangeAnimation(AnimationType::EntityStandingDown);
 				}
 			}
 			// Moving up vertically
 			else {
-				animation.ChangeAnimation(AnimationType::WalkingUp);
+				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
 		else if (direction.x > 0) {
 			// Moving down-right
 			if (direction.y > 0) {
-				animation.ChangeAnimation(AnimationType::WalkingDown);
+				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Moving right horizontally
 			else if (direction.y == 0) {
-				animation.ChangeAnimation(AnimationType::WalkingRight);
+				animation.ChangeAnimation(AnimationType::EntityWalkingRight);
 			}
 			// Moving up-right
 			else {
-				animation.ChangeAnimation(AnimationType::WalkingUp);
+				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
 		else {
 			// Moving down-left
 			if (direction.y > 0) {
-				animation.ChangeAnimation(AnimationType::WalkingDown);
+				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Moving left horizontally
 			else if (direction.y == 0) {
-				animation.ChangeAnimation(AnimationType::WalkingLeft);
+				animation.ChangeAnimation(AnimationType::EntityWalkingLeft);
 			}
 			// Moving up-left
 			else {
-				animation.ChangeAnimation(AnimationType::WalkingUp);
+				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
 	}

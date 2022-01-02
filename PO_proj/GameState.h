@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <deque>
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -20,17 +21,24 @@ private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	sf::RectangleShape meme;
 	std::vector<Teleport> teleports;
-	std::vector<std::pair<sf::Vector2f, sf::Vector2f>> lines;
+	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> lines;
 	std::vector<Arrow> arrows;
 	float timeSinceShot;
 	sf::RectangleShape tavern;
+
+	// Game state booleans
+	bool isPlayerInTeleport = false;
 
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;
 	sf::Sprite avatar;
 	sf::RectangleShape avatarFrame;
+	sf::Text useText;
+
+	// Debug interface
 	sf::Text fpsText;
 	sf::Text enemyCountText;
+	sf::Text playerPositionText;
 
 	// Camera
 	sf::View gameView;

@@ -1,27 +1,24 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
 namespace AnimationType {
 	enum AnimationType {
-		// StandingDown = 0,
-		// StandingUp = 1,
-		// StandingLeft = 2,
-		// StandingRight = 3,
-		// WalkingDown = 4,
-		// WalkingUp = 5,
-		// WalkingLeft = 6,
-		// WalkingRight = 7,
-		// Default = StandingDown,
+		// Entity (player or enemy) animation rows
+		EntityStandingDown = 0,
+		EntityStandingUp = 1,
+		EntityStandingLeft = 2,
+		EntityStandingRight = 3,
+		EntityWalkingDown = 4,
+		EntityWalkingUp = 5,
+		EntityWalkingLeft = 6,
+		EntityWalkingRight = 7,
+		EntityDefault = EntityStandingDown,
 
-		// Temporary values
-		StandingDown = 3,
-		StandingUp = 4,
-		StandingLeft = 3,
-		StandingRight = 3,
-		WalkingDown = 1,
-		WalkingUp = 2,
-		WalkingLeft = 5,
-		WalkingRight = 0,
-		Default = StandingDown,
+		// Arrow animation rows
+		ArrowDefault = 0,
+
+		// Default
+		Default = 0,
 	};
 }
 

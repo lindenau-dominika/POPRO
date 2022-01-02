@@ -32,7 +32,7 @@ void Animation::ChangeAnimation(AnimationType::AnimationType animationType)
 		// Revert to default animation if we try to use non-existing animation
 		if (currentAnimation >= animations)
 		{
-			currentAnimation = AnimationType::Default;
+			currentAnimation = AnimationType::EntityDefault;
 		}
 
 		totalTime = 0;
