@@ -8,6 +8,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "ResourceManager.h"
+#include "Arrow.h"
 
 class GameState : public State {
 private:
@@ -19,7 +20,10 @@ private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	sf::RectangleShape meme;
 	std::vector<Teleport> teleports;
-	
+	std::vector<std::pair<sf::Vector2f, sf::Vector2f>> lines;
+	std::vector<Arrow> arrows;
+	float timeSinceShot;
+
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;
 	sf::Sprite avatar;

@@ -11,6 +11,7 @@ namespace ResourceIDs {
 		PlayerAvatar,
 		HealthBar,
 		EnemySpriteSheet,
+		ArrowSpriteSheet,
 	};
 
 	enum class Fonts {

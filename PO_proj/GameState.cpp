@@ -84,6 +84,10 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         target.draw(*enemy);
     }
 
+    for (auto& arrow : arrows) {
+        target.draw(arrow);
+    }
+
     // Draw teleports in debug mode
     if (GetDebugMode()) {
         for (auto& teleport : teleports) {
@@ -101,6 +105,15 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
             tpRect.setOutlineThickness(1);
             tpRect.setOutlineColor(sf::Color::White);
             target.draw(exit);
+        }
+
+        for (auto& [playerPos, endPos] : lines) {
+            sf::Vertex line[] = {
+                playerPos,
+                endPos
+            };
+
+            target.draw(line, 2, sf::Lines);
         }
     }
 
@@ -154,6 +167,30 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
         playerDirection.y += 1;
     }
 
+    // Player action
+    timeSinceShot += deltaTime;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (timeSinceShot > 0.5) {
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
+            sf::Vector2f playerPos = player->GetPosition();
+            lines.emplace_back(playerPos, worldPos);
+
+            sf::Vector2f direction = worldPos - playerPos;
+            float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
+            sf::Vector2f normalizedDirection(0, 0);
+            if (magnitude != 0) {
+                normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
+            }
+
+            Arrow arrow(playerPos, normalizedDirection, 200.0f, 3.0f);
+            arrows.push_back(arrow);
+
+            timeSinceShot = 0;
+        }
+    }
+
     player->Move(playerDirection);
     player->update(deltaTime);
     for(auto& enemy : enemies) {
@@ -166,6 +203,17 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
         {
             player->SetPosition(teleport.GetExitPosition());
         } 
+    }
+
+    auto it = arrows.begin();
+    while (it != arrows.end()) {
+        if (it->HasLifeTimeEnded()) {
+            it = arrows.erase(it);
+        }
+        else {
+            it->update(deltaTime);
+            it++;
+        }
     }
 
     gameView.setCenter(player->GetPosition());

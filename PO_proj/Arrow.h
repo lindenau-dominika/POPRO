@@ -2,16 +2,25 @@
 #include <SFML/Graphics.hpp>
 #include "entity.h"
 
-class Arrow
+class Arrow : public sf::Drawable
 {
 private:
     sf::Vector2f position;
     sf::Vector2f velocity;
-    sf::Vector2f deaccelaration_rate = sf::Vector2f(5.0f, 5.0f);
+    sf::Vector2f deaccelaration_rate = sf::Vector2f(0.6f, 0.6f);
+    sf::RectangleShape body;
+    // Animation animation;
+
+    float lifeTime;
+    float time = 0.0f;
 
 public:
-    Arrow(sf::Vector2f initial_position, sf::Vector2f initial_velocity);
-    void update(float delta_time);
+    Arrow(sf::Vector2f initialPosition, sf::Vector2f direction, float speed, float lifeTime);
+    void update(float deltaTime);
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    sf::Vector2f GetPosition() const;
+    sf::Vector2f GetVelocity() const;
+
+    bool HasLifeTimeEnded() const;
 };
-

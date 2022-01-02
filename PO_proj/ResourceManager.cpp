@@ -6,7 +6,8 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 	{ResourceIDs::Textures::PlayerAvatar, "assets/interface.png"},
 	{ResourceIDs::Textures::HealthBar, "assets/healthbar.png"},
 	{ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png"},
-	{ResourceIDs::Textures::Ground, "assets/basicc.png"}
+	{ResourceIDs::Textures::Ground, "assets/basicc.png"},
+	{ResourceIDs::Textures::ArrowSpriteSheet, "assets/arrow_animation.png"},
 };
 
 std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {

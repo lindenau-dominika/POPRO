@@ -9,8 +9,8 @@ Player::Player(int hp, int level, sf::Texture* texture, Animation animation, flo
 
 	GetBody()->setSize(sf::Vector2f(32.0f, 38.4f));
 	GetBody()->setPosition(450.0f, 450.0f);
-	GetBody()->setOrigin(30.0f, 48.0f);
 	GetBody()->setTexture(texture);
+	GetBody()->setOrigin(GetBody()->getSize().x / 2, GetBody()->getSize().y / 2);
 }
 
 
