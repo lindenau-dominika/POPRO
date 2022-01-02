@@ -56,9 +56,20 @@ gameView(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(700.0f, 384.0f)), interfaceView(
     fpsText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2);
     fpsText.setCharacterSize(10);
 
+    // Set up debug texts
+    enemyCountText.setFont(*font);
+    enemyCountText.setString("dummy");
+    enemyCountText.setOrigin(0, enemyCountText.getLocalBounds().height);
+    enemyCountText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - 20);
+    enemyCountText.setCharacterSize(10);
 
     // Teleports
     teleports.emplace_back(sf::FloatRect(100.f, 100.f, 300.f, 300.f), sf::Vector2f(420.f, 666.f));
+
+    // Set up tavern
+    tavern = sf::RectangleShape(sf::Vector2f(275 / 2, 474 / 2));
+    tavern.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::Tavern).get());
+    tavern.setPosition(600.0f, 600.0f);
 }
 
 //void GameState::isDead() const
@@ -79,6 +90,7 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Draw world
     target.setView(gameView);
     target.draw(meme);
+    target.draw(tavern);
     target.draw(*player);
     for (auto& enemy : enemies) {
         target.draw(*enemy);
@@ -125,6 +137,7 @@ void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Draw FPS counter in debug mode
     if (GetDebugMode()) {
         target.draw(fpsText);
+        target.draw(enemyCountText);
     }
 }
 
@@ -196,6 +209,9 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
     for(auto& enemy : enemies) {
         enemy->update(deltaTime);
         enemy->HandleCollision(*player);
+        for (auto& otherEnemy : enemies) {
+            enemy->HandleCollision(*otherEnemy);
+        }
     }
 
     for(auto& teleport : teleports) {
@@ -218,6 +234,7 @@ void GameState::update(sf::RenderWindow& window, float deltaTime) {
 
     gameView.setCenter(player->GetPosition());
     fpsText.setString(std::to_string(static_cast<int>(1 / deltaTime)) + " FPS");
+    enemyCountText.setString(std::to_string(enemies.size()) + " enemies");
 }
 
 

@@ -8,6 +8,7 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 	{ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png"},
 	{ResourceIDs::Textures::Ground, "assets/basicc.png"},
 	{ResourceIDs::Textures::ArrowSpriteSheet, "assets/arrow_animation.png"},
+	{ResourceIDs::Textures::Tavern, "assets/tavern.png"},
 };
 
 std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {

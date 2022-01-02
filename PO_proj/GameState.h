@@ -23,12 +23,14 @@ private:
 	std::vector<std::pair<sf::Vector2f, sf::Vector2f>> lines;
 	std::vector<Arrow> arrows;
 	float timeSinceShot;
+	sf::RectangleShape tavern;
 
 	//Interface - Healthbar, avatar
 	sf::RectangleShape healthBar;
 	sf::Sprite avatar;
 	sf::RectangleShape avatarFrame;
 	sf::Text fpsText;
+	sf::Text enemyCountText;
 
 	// Camera
 	sf::View gameView;
