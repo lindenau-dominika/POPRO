@@ -48,3 +48,28 @@ bool Arrow::HasLifeTimeEnded() const
 {
 	return time > lifeTime;
 }
+
+bool Arrow::IsAlive()
+{
+	return this->alive && !HasLifeTimeEnded();
+}
+
+void Arrow::kill()
+{
+	this->alive=false;
+}
+
+void Arrow::HandleCollision(Entity& entity) {
+	auto bounds = body.getGlobalBounds(), entityBounds = entity.GetBounds();
+	auto centerX = bounds.left + bounds.width / 2, centerY = bounds.top + bounds.height / 2;
+	auto otherCenterX = entityBounds.left + entityBounds.width / 2, otherCenterY = entityBounds.top + entityBounds.height / 2;
+	auto dx = centerX - otherCenterX, dy = centerY - otherCenterY;
+
+	auto radiusX = bounds.width / 2, radiusY = bounds.height / 2;
+	auto otherRadiusX = entityBounds.width / 2, otherRadiusY = entityBounds.height / 2;
+
+	if (abs(dx) < radiusX + otherRadiusX && abs(dy) < radiusY + otherRadiusY) {
+		entity.TakeDamage(damage);
+		kill();
+	}
+}

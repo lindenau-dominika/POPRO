@@ -14,7 +14,8 @@ private:
 
     float lifeTime;
     float time = 0.0f;
-
+	int damage = 3.0f;
+    bool alive;
 public:
     Arrow(sf::Texture* texture, Animation animation, sf::Vector2f initialPosition, sf::Vector2f direction, float speed, float lifeTime);
     void update(float deltaTime);
@@ -24,4 +25,8 @@ public:
     sf::Vector2f GetVelocity() const;
 
     bool HasLifeTimeEnded() const;
+    bool IsAlive();
+    void kill();
+
+    void HandleCollision(Entity& entity);
 };

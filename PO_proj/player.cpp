@@ -3,8 +3,9 @@
 #include "animation.h"
 
 Player::Player(int hp, int level, sf::Texture* texture, Animation animation, float speed) :
-	animation(animation), Entity(texture, speed) {
+	animation(animation), Entity(texture, speed, hp) {
 	this->level = level;
+	SetDamageCooldown(1.0f);
 
 	GetBody()->setSize(sf::Vector2f(40.0, 56.0));
 	GetBody()->setPosition(1450.0f, 1450.0f);
@@ -13,7 +14,7 @@ Player::Player(int hp, int level, sf::Texture* texture, Animation animation, flo
 }
 
 
-void Player::Move(sf::Vector2i direction)
+void Player::Move(sf::Vector2f direction)
 {
 	SetDirection(direction);
 }
@@ -21,6 +22,8 @@ void Player::Move(sf::Vector2i direction)
 //declaring the movement
 void Player::update(float deltaTime)
 {
+	UpdateCooldown(deltaTime);
+
 	auto lastDirection = GetLastDirection();
 	auto direction = GetDirection();
 

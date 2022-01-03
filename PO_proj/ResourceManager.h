@@ -13,6 +13,7 @@ namespace ResourceIDs {
 		EnemySpriteSheet,
 		ArrowSpriteSheet,
 		Tavern,
+		TavernInside,
 	};
 
 	enum class Fonts {

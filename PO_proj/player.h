@@ -14,7 +14,7 @@ private:
 
 public:
 	Player(int hp, int level, sf::Texture* texture, Animation animation, float speed);
-	void Move(sf::Vector2i direction);
+	void Move(sf::Vector2f direction);
 	virtual void update(float deltaTime) override;
 };
 

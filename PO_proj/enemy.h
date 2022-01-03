@@ -14,4 +14,5 @@ public:
 
 private:
 	Animation animation;
+	bool alive;
 };

@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "ResourceManager.h"
 #include "Arrow.h"
+#include "Building.h"
 
 class GameState : public State {
 private:
@@ -20,11 +21,12 @@ private:
 	std::unique_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	sf::RectangleShape meme;
+	sf::RectangleShape tavernFloor;
 	std::vector<Teleport> teleports;
 	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> lines;
 	std::vector<Arrow> arrows;
 	float timeSinceShot;
-	sf::RectangleShape tavern;
+	std::vector<Building> buildings;
 
 	// Game state booleans
 	bool isPlayerInTeleport = false;

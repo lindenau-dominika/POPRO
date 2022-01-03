@@ -1,9 +1,9 @@
 #include "entity.h"
 #include "animation.h"
 
-Entity::Entity(sf::Texture* texture, float speed) : speed(speed)
+Entity::Entity(sf::Texture* texture, float speed, int hp) : speed(speed), maxHp(hp), hp(hp)
 {
-	
+	alive = true;
 }
 
 
@@ -26,11 +26,11 @@ sf::Vector2f Entity::GetPosition() const
 	return body.getPosition();
 }
 
-sf::Vector2i Entity::GetLastDirection() const {
+sf::Vector2f Entity::GetLastDirection() const {
 	return lastDirection;
 }
 
-sf::Vector2i Entity::GetDirection() const {
+sf::Vector2f Entity::GetDirection() const {
 	return direction;
 }
 
@@ -42,11 +42,43 @@ float Entity::GetSpeed() const {
 	return speed;
 }
 
+int Entity::GetHP() const
+{
+	return hp;
+}
+
+int Entity::GetMaxHP() const
+{
+	return maxHp;
+}
+
+bool Entity::IsAlive() const
+{
+	return alive;
+}
+
+void Entity::Kill()
+{
+	this->alive = false;
+}
+
+void Entity::TakeDamage(int damage)
+{
+	if (timeSinceLastDamage >= damageCooldown) {
+		timeSinceLastDamage = 0.0f;
+		hp -= damage;
+		if (hp <= 0) {
+			hp = 0;
+			Kill();
+		}
+	}
+}
+
 void Entity::SetPosition(sf::Vector2f position) {
 	body.setPosition(position);
 }
 
-void Entity::SetDirection(sf::Vector2i direction) {
+void Entity::SetDirection(sf::Vector2f direction) {
 	this->lastDirection = this->direction;
 	this->direction = direction;
 }
@@ -70,11 +102,13 @@ void Entity::HandleCollision(Entity& other)
 			int side = (dx > 0) - (dx < 0);
 			other.GetBody()->move(-side * (radiusX + otherRadiusX - abs(dx)) / 2, 0);
 			GetBody()->move(side * (radiusX + otherRadiusX - abs(dx)) / 2, 0);
+			other.TakeDamage(150);
 		}
 		else {
 			int side = (dy > 0) - (dy < 0);
 			other.GetBody()->move(0, -side * (radiusY + otherRadiusY - abs(dy)) / 2);
 			GetBody()->move(0, side * (radiusY + otherRadiusY - abs(dy)) / 2);
+			other.TakeDamage(150);
 		}
 	}
 }
