@@ -163,7 +163,6 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Building.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -179,7 +178,6 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <ClInclude Include="animation.h" />
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Building.h" />
-    <ClInclude Include="Collider.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="GameState.h" />
