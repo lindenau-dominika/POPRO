@@ -12,8 +12,8 @@ const sf::Color TITLE_COLOR = sf::Color::Cyan;
 const int TITLE_SIZE = 120;
 const sf::Vector2f TITLE_POSITION = sf::Vector2f(220.0f, 50.0f);
 
-
-class MenuState : public State {
+class MenuState : public State
+{
 private:
 	int selected = 0;
 	sf::Text title;
@@ -23,11 +23,12 @@ private:
 	sf::RectangleShape menuBackground;
 
 	std::shared_ptr<ResourceManager> resourceManager;
+
 public:
-	MenuState(StateMachine& machine, const std::string& title, std::shared_ptr<ResourceManager> resourceManager);
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void update(sf::RenderWindow& window, float deltaTime);
-	void add_option(const std::string& contents, const sf::Vector2f position);
+	MenuState(StateMachine &machine, const std::string &title, std::shared_ptr<ResourceManager> resourceManager);
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	virtual void update(sf::RenderWindow &window, float deltaTime);
+	void add_option(const std::string &contents, const sf::Vector2f position);
 
 	void move_up();
 	void move_down();

@@ -1,14 +1,14 @@
 #include "Building.h"
 
-Building::Building(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position)
+Building::Building(sf::Texture *texture, sf::Vector2f size, sf::Vector2f position)
 {
-    body.setSize(size);
-    body.setOrigin(size / 2.0f); 
-    body.setPosition(position);
-    body.setTexture(texture);
+	body.setSize(size);
+	body.setOrigin(size / 2.0f);
+	body.setPosition(position);
+	body.setTexture(texture);
 }
 
-Building::Building(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position, sf::FloatRect customCollisionBox) : Building(texture, size, position)
+Building::Building(sf::Texture *texture, sf::Vector2f size, sf::Vector2f position, sf::FloatRect customCollisionBox) : Building(texture, size, position)
 {
 	this->useCustomCollisionBox = true;
 	this->customCollisionBox = customCollisionBox;
@@ -16,15 +16,14 @@ Building::Building(sf::Texture* texture, sf::Vector2f size, sf::Vector2f positio
 
 Building::~Building()
 {
-
 }
 
-void Building::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Building::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(body);
+	target.draw(body);
 }
 
-void Building::HandleCollision(Entity& entity)
+void Building::HandleCollision(Entity &entity)
 {
 	auto bounds = GetBounds(), entityBounds = entity.GetBounds();
 	auto centerX = bounds.left + bounds.width / 2, centerY = bounds.top + bounds.height / 2;
@@ -34,28 +33,34 @@ void Building::HandleCollision(Entity& entity)
 	auto radiusX = bounds.width / 2, radiusY = bounds.height / 2;
 	auto otherRadiusX = entityBounds.width / 2, otherRadiusY = entityBounds.height / 2;
 
-	if (abs(dx) < radiusX + otherRadiusX && abs(dy) < radiusY + otherRadiusY) {
-		if (abs(dx) > abs(dy)) {
+	if (abs(dx) < radiusX + otherRadiusX && abs(dy) < radiusY + otherRadiusY)
+	{
+		if (abs(dx) > abs(dy))
+		{
 			int side = (dx > 0) - (dx < 0);
-			entity.GetBody()->move(-side * (radiusX + otherRadiusX - abs(dx)) , 0);
+			entity.GetBody()->move(-side * (radiusX + otherRadiusX - abs(dx)), 0);
 		}
-		else {
+		else
+		{
 			int side = (dy > 0) - (dy < 0);
-			entity.GetBody()->move(0, -side * (radiusY + otherRadiusY - abs(dy)) );
+			entity.GetBody()->move(0, -side * (radiusY + otherRadiusY - abs(dy)));
 		}
 	}
 }
 
 sf::FloatRect Building::GetBounds() const
 {
-	if (useCustomCollisionBox) {
+	if (useCustomCollisionBox)
+	{
 		return customCollisionBox;
 	}
-	else {
+	else
+	{
 		return body.getGlobalBounds();
 	}
 }
 
-sf::RectangleShape* Building::GetBody() {
+sf::RectangleShape *Building::GetBody()
+{
 	return &body;
 }

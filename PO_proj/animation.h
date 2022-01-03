@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-namespace AnimationType {
-	enum AnimationType {
+namespace AnimationType
+{
+	enum AnimationType
+	{
 		// Entity (player or enemy) animation rows
 		EntityStandingDown = 0,
 		EntityStandingUp = 1,
@@ -36,10 +38,9 @@ private:
 	int frames;
 	float switchTime;
 	float totalTime = 0.0f;
-	
+
 	AnimationType::AnimationType currentAnimation = AnimationType::Default;
 	int currentFrame = 0;
 
 	sf::IntRect uvRect;
 };
-

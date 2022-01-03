@@ -12,26 +12,31 @@
 #include "Arrow.h"
 #include "Building.h"
 
-class GameState : public State {
+class GameState : public State
+{
 private:
 	// Assets
 	std::shared_ptr<ResourceManager> resourceManager;
 
 	// Game objects
+	// Entities
 	std::unique_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
-	sf::RectangleShape meme;
+	std::vector<Arrow> arrows;
+
+	// Backgrounds
+	sf::RectangleShape background;
 	sf::RectangleShape tavernFloor;
 	std::vector<Teleport> teleports;
-	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> lines;
-	std::vector<Arrow> arrows;
-	float timeSinceShot;
+
+	// Buildings
 	std::vector<Building> buildings;
 
-	// Game state booleans
+	// Game state variables
 	bool isPlayerInTeleport = false;
+	float timeSinceShot;
 
-	//Interface - Healthbar, avatar
+	// Game interface
 	sf::RectangleShape healthBar;
 	sf::Sprite avatar;
 	sf::RectangleShape avatarFrame;
@@ -42,16 +47,20 @@ private:
 	sf::Text enemyCountText;
 	sf::Text playerPositionText;
 
-	// Camera
+	// Cameras
 	sf::View gameView;
 	sf::View interfaceView;
 
+	// Debug mode state
 	bool debugMode;
 	bool GetDebugMode() const;
 	void SetDebugMode(bool debugMode);
 
+	// Debug objects
+	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> lines;
+
 public:
-	GameState(StateMachine& machine, std::shared_ptr<ResourceManager> resourceManager);
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void update(sf::RenderWindow& window, float deltaTime);
+	GameState(StateMachine &machine, std::shared_ptr<ResourceManager> resourceManager);
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	virtual void update(sf::RenderWindow &window, float deltaTime);
 };

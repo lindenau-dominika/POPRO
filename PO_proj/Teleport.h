@@ -15,15 +15,12 @@ public:
 	const sf::FloatRect GetBounds() const;
 	// bool IsStandingOnTeleport(sf::Vector2f position) const ;
 	sf::Vector2f GetExitPosition() const;
-
-
-
 };
 
 /*
 
-Teleport -> teleportowa³
+Teleport -> teleportowaï¿½
 
-Kurcze szefie, s³uszna uwaga ^^^^
+Kurcze szefie, sï¿½uszna uwaga ^^^^
 
 */

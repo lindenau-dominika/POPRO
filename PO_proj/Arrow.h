@@ -5,6 +5,20 @@
 
 class Arrow : public sf::Drawable
 {
+public:
+    Arrow(sf::Texture *texture, Animation animation, sf::Vector2f initialPosition, sf::Vector2f direction, float speed, float lifeTime);
+    void update(float deltaTime);
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+    sf::Vector2f GetPosition() const;
+    sf::Vector2f GetVelocity() const;
+
+    bool HasLifeTimeEnded() const;
+    bool IsAlive();
+    void kill();
+
+    void HandleCollision(Entity &entity);
+
 private:
     sf::Vector2f position;
     sf::Vector2f velocity;
@@ -14,19 +28,6 @@ private:
 
     float lifeTime;
     float time = 0.0f;
-	int damage = 3.0f;
+    int damage = 3.0f;
     bool alive;
-public:
-    Arrow(sf::Texture* texture, Animation animation, sf::Vector2f initialPosition, sf::Vector2f direction, float speed, float lifeTime);
-    void update(float deltaTime);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-    sf::Vector2f GetPosition() const;
-    sf::Vector2f GetVelocity() const;
-
-    bool HasLifeTimeEnded() const;
-    bool IsAlive();
-    void kill();
-
-    void HandleCollision(Entity& entity);
 };

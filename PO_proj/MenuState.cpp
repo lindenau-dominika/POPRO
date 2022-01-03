@@ -4,7 +4,7 @@
 #include "StateMachine.h"
 #include <memory>
 
-MenuState::MenuState(StateMachine& machine, const std::string& title, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
+MenuState::MenuState(StateMachine &machine, const std::string &title, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
 {
 	this->title.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General).get());
 	this->title.setString(title);
@@ -12,67 +12,74 @@ MenuState::MenuState(StateMachine& machine, const std::string& title, std::share
 	this->title.setFillColor(TITLE_COLOR);
 	this->title.setPosition(TITLE_POSITION);
 
-
 	menuBackground = sf::RectangleShape(sf::Vector2f(1820.0f, 1024.0f));
 	menuBackground.setPosition(0.0, 0.0);
-    menuBackground.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::MenuBackground).get());
-
+	menuBackground.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::MenuBackground).get());
 }
 
-void MenuState::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void MenuState::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
 	target.setView(menuView);
 	target.draw(title);
 	target.draw(menuBackground);
-	for (auto& option : options) {
+	for (auto &option : options)
+	{
 		target.draw(option);
 	}
 }
 
-void MenuState::update(sf::RenderWindow& window, float deltaTime)
+void MenuState::update(sf::RenderWindow &window, float deltaTime)
 {
 	sf::Event event;
 
-    // Poll events
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-        else if (event.type == event.KeyPressed)
-        {
-            if (event.key.code == sf::Keyboard::Escape) {
-                window.close();
-            }
+	// Poll events
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			window.close();
+		}
+		else if (event.type == event.KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				window.close();
+			}
 
-            if (event.key.code == sf::Keyboard::Down)
-            {
-                move_down();
-            }
-            if (event.key.code == sf::Keyboard::Up) {
-                move_up();
-            }
-            if (event.key.code == sf::Keyboard::Enter or event.key.code == sf::Keyboard::Space) {
-                int selected_option = get_selected_option();
-                if (selected_option == 0) {
+			if (event.key.code == sf::Keyboard::Down)
+			{
+				move_down();
+			}
+			if (event.key.code == sf::Keyboard::Up)
+			{
+				move_up();
+			}
+			if (event.key.code == sf::Keyboard::Enter or event.key.code == sf::Keyboard::Space)
+			{
+				int selected_option = get_selected_option();
+				if (selected_option == 0)
+				{
 					// Enter the play state
 					GameState gameState(parent_machine, resourceManager);
 					parent_machine.push_state(std::make_unique<GameState>(std::move(gameState)));
-                }
-                else if (selected_option == 1) {
-                    // Options menu state
+				}
+				else if (selected_option == 1)
+				{
+					// Options menu state
 					SettingsState settingsState(parent_machine, "U dont need this but ok. its W S A D. glhf", resourceManager);
 					parent_machine.push_state(std::make_unique<SettingsState>(std::move(settingsState)));
-                }
-                else if (selected_option == 2) {
-                    window.close();
-                }
-
-            }
-        }
-    }
+				}
+				else if (selected_option == 2)
+				{
+					window.close();
+				}
+			}
+		}
+	}
 }
 
-void MenuState::add_option(const std::string& contents, const sf::Vector2f position) {
+void MenuState::add_option(const std::string &contents, const sf::Vector2f position)
+{
 	sf::Text text;
 	text.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General));
 	text.setString(contents);
@@ -80,11 +87,13 @@ void MenuState::add_option(const std::string& contents, const sf::Vector2f posit
 	text.setOutlineThickness(5);
 
 	// Select new option by default if there are no other options
-	if (options.size() == 0) {
+	if (options.size() == 0)
+	{
 		text.setCharacterSize(SELECTED_SIZE);
 		text.setFillColor(SELECTED_COLOR);
 	}
-	else {
+	else
+	{
 		text.setCharacterSize(UNSELECTED_SIZE);
 		text.setFillColor(UNSELECTED_COLOR);
 	}
@@ -96,7 +105,8 @@ void MenuState::add_option(const std::string& contents, const sf::Vector2f posit
 void MenuState::select(int index)
 {
 	// Check for out-of-bounds index
-	if (index >= 0 && index < options.size()) {
+	if (index >= 0 && index < options.size())
+	{
 		// Unselect currently selected option
 		options.at(selected).setCharacterSize(UNSELECTED_SIZE);
 		options.at(selected).setFillColor(UNSELECTED_COLOR);
@@ -111,7 +121,8 @@ void MenuState::select(int index)
 void MenuState::move_up()
 {
 	int index = selected - 1;
-	if (selected == 0) {
+	if (selected == 0)
+	{
 		index = options.size() - 1;
 	}
 	select(index);
@@ -120,7 +131,8 @@ void MenuState::move_up()
 void MenuState::move_down()
 {
 	int index = selected + 1;
-	if (selected == options.size() - 1) {
+	if (selected == options.size() - 1)
+	{
 		index = 0;
 	}
 	select(index);

@@ -2,8 +2,8 @@
 #include "entity.h"
 #include "animation.h"
 
-Player::Player(int hp, int level, sf::Texture* texture, Animation animation, float speed) :
-	animation(animation), Entity(texture, speed, hp) {
+Player::Player(int hp, int level, sf::Texture *texture, Animation animation, float speed) : animation(animation), Entity(texture, speed, hp)
+{
 	this->level = level;
 	SetDamageCooldown(1.0f);
 
@@ -12,7 +12,6 @@ Player::Player(int hp, int level, sf::Texture* texture, Animation animation, flo
 	GetBody()->setTexture(texture);
 	GetBody()->setOrigin(GetBody()->getSize().x / 2, GetBody()->getSize().y / 2);
 }
-
 
 void Player::Move(sf::Vector2f direction)
 {
@@ -27,51 +26,66 @@ void Player::update(float deltaTime)
 	auto lastDirection = GetLastDirection();
 	auto direction = GetDirection();
 
-	if (lastDirection != direction) {
-		if (direction.x == 0) {
+	if (lastDirection != direction)
+	{
+		if (direction.x == 0)
+		{
 			// Moving down vertically
-			if (direction.y > 0) {
+			if (direction.y > 0)
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Standing still
-			else if (direction.y == 0) {
-				if (lastDirection.y < 0) {
+			else if (direction.y == 0)
+			{
+				if (lastDirection.y < 0)
+				{
 					animation.ChangeAnimation(AnimationType::EntityStandingUp);
 				}
-				else {
+				else
+				{
 					animation.ChangeAnimation(AnimationType::EntityStandingDown);
 				}
 			}
 			// Moving up vertically
-			else {
+			else
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
-		else if (direction.x > 0) {
+		else if (direction.x > 0)
+		{
 			// Moving down-right
-			if (direction.y > 0) {
+			if (direction.y > 0)
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Moving right horizontally
-			else if (direction.y == 0) {
+			else if (direction.y == 0)
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingRight);
 			}
 			// Moving up-right
-			else {
+			else
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
-		else {
+		else
+		{
 			// Moving down-left
-			if (direction.y > 0) {
+			if (direction.y > 0)
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingDown);
 			}
 			// Moving left horizontally
-			else if (direction.y == 0) {
+			else if (direction.y == 0)
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingLeft);
 			}
 			// Moving up-left
-			else {
+			else
+			{
 				animation.ChangeAnimation(AnimationType::EntityWalkingUp);
 			}
 		}
@@ -79,7 +93,8 @@ void Player::update(float deltaTime)
 
 	float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
 	sf::Vector2f normalizedDirection(0, 0);
-	if (magnitude != 0) {
+	if (magnitude != 0)
+	{
 		normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
 	}
 	float dx = normalizedDirection.x * GetSpeed();
@@ -87,5 +102,5 @@ void Player::update(float deltaTime)
 
 	animation.Update(deltaTime);
 	GetBody()->setTextureRect(animation.GetUVRect());
-	GetBody()->move(dx * deltaTime, dy * deltaTime);	
+	GetBody()->move(dx * deltaTime, dy * deltaTime);
 }

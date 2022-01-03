@@ -1,17 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Collider.h"
 #include "animation.h"
 
 class Entity : public sf::Drawable
 {
 public:
-	Entity(sf::Texture* texture, float speed, int maxHp);
+	Entity(sf::Texture *texture, float speed, int maxHp);
 
 	virtual void update(float deltaTime) = 0;
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-	sf::RectangleShape* GetBody();
+	sf::RectangleShape *GetBody();
 	sf::FloatRect GetBounds() const;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetLastDirection() const;
@@ -28,16 +27,18 @@ public:
 	void SetDirection(sf::Vector2f direction);
 	void SetVelocity(sf::Vector2f velocity);
 
-	void HandleCollision(Entity& other);
-	void SetDamageCooldown(float coolDown) {
+	void HandleCollision(Entity &other);
+	void SetDamageCooldown(float coolDown)
+	{
 		damageCooldown = coolDown;
 	}
-	//virtual void OnCollision() = 0;
+
 protected:
-	void UpdateCooldown(float deltaTime) {
+	void UpdateCooldown(float deltaTime)
+	{
 		timeSinceLastDamage += deltaTime;
 	}
-	
+
 private:
 	sf::RectangleShape body;
 	sf::FloatRect bound;

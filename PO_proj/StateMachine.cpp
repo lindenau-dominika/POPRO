@@ -1,15 +1,17 @@
 #include "StateMachine.h"
 
-void StateMachine::update(sf::RenderWindow& window, float deltaTime)
+void StateMachine::update(sf::RenderWindow &window, float deltaTime)
 {
-	if (!states.empty()) {
+	if (!states.empty())
+	{
 		states.back()->update(window, deltaTime);
 	}
 }
 
-void StateMachine::draw(sf::RenderWindow& window)
+void StateMachine::draw(sf::RenderWindow &window)
 {
-	if (!states.empty()) {
+	if (!states.empty())
+	{
 		window.draw(*states.back());
 	}
 }

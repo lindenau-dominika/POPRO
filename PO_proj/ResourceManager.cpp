@@ -13,13 +13,10 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 };
 
 std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {
-	{ResourceIDs::Fonts::General, "assets/arial.ttf"}
-};
+	{ResourceIDs::Fonts::General, "assets/arial.ttf"}};
 
 std::unordered_map<ResourceIDs::Music, std::string> ResourceManager::musicPaths = {
-	{ResourceIDs::Music::Overworld, "assets/soundtrack.wav"}
-};
-
+	{ResourceIDs::Music::Overworld, "assets/soundtrack.wav"}};
 
 std::shared_ptr<sf::Texture> ResourceManager::GetTexture(ResourceIDs::Textures id) const
 {
@@ -39,17 +36,20 @@ std::shared_ptr<sf::Music> ResourceManager::GetMusic(ResourceIDs::Music id) cons
 void ResourceManager::LoadAll()
 {
 	// Load textures
-	for (auto const& [id, path] : texturePaths) {
+	for (auto const &[id, path] : texturePaths)
+	{
 		LoadTexture(id, path);
 	}
 
 	// Load fonts
-	for (auto const& [id, path] : fontPaths) {
+	for (auto const &[id, path] : fontPaths)
+	{
 		LoadFont(id, path);
 	}
 
 	// Load music
-	for (auto const& [id, path] : musicPaths) {
+	for (auto const &[id, path] : musicPaths)
+	{
 		LoadMusic(id, path);
 	}
 }
@@ -57,7 +57,8 @@ void ResourceManager::LoadAll()
 void ResourceManager::LoadTexture(ResourceIDs::Textures id, std::string path)
 {
 	auto texture = std::make_shared<sf::Texture>();
-	if (!texture->loadFromFile(path)) {
+	if (!texture->loadFromFile(path))
+	{
 		throw("Couldn't load texture: " + path);
 	}
 
@@ -67,18 +68,19 @@ void ResourceManager::LoadTexture(ResourceIDs::Textures id, std::string path)
 void ResourceManager::LoadFont(ResourceIDs::Fonts id, std::string path)
 {
 	auto font = std::make_shared<sf::Font>();
-	if (!font->loadFromFile(path)) {
+	if (!font->loadFromFile(path))
+	{
 		throw("Couldn't load font: " + path);
 	}
 
 	fonts[id] = font;
 }
 
-
 void ResourceManager::LoadMusic(ResourceIDs::Music id, std::string path)
 {
 	auto music = std::make_shared<sf::Music>();
-	if (!music->openFromFile(path)) {
+	if (!music->openFromFile(path))
+	{
 		throw("Couldn't load music: " + path);
 	}
 

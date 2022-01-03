@@ -17,6 +17,7 @@ const sf::FloatRect Teleport::GetBounds() const
 //	return bounding_box.contains(position);
 //}
 
-sf::Vector2f Teleport::GetExitPosition() const {
+sf::Vector2f Teleport::GetExitPosition() const
+{
 	return exit_position;
 }

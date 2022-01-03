@@ -3,8 +3,10 @@
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 
-namespace ResourceIDs {
-	enum class Textures {
+namespace ResourceIDs
+{
+	enum class Textures
+	{
 		MenuBackground,
 		Ground,
 		PlayerSpriteSheet,
@@ -16,16 +18,19 @@ namespace ResourceIDs {
 		TavernInside,
 	};
 
-	enum class Fonts {
+	enum class Fonts
+	{
 		General,
 	};
 
-	enum class Music {
+	enum class Music
+	{
 		Overworld,
 	};
 }
 
-class ResourceManager {
+class ResourceManager
+{
 public:
 	std::shared_ptr<sf::Texture> GetTexture(ResourceIDs::Textures id) const;
 	std::shared_ptr<sf::Font> GetFont(ResourceIDs::Fonts id) const;
@@ -41,7 +46,7 @@ private:
 	std::unordered_map<ResourceIDs::Textures, std::shared_ptr<sf::Texture>> textures;
 	std::unordered_map<ResourceIDs::Fonts, std::shared_ptr<sf::Font>> fonts;
 	std::unordered_map<ResourceIDs::Music, std::shared_ptr<sf::Music>> music;
- 
+
 	static std::unordered_map<ResourceIDs::Textures, std::string> texturePaths;
 	static std::unordered_map<ResourceIDs::Fonts, std::string> fontPaths;
 	static std::unordered_map<ResourceIDs::Music, std::string> musicPaths;

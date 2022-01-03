@@ -33,11 +33,11 @@ int main()
     menu.add_option("Exito see you laterito", sf::Vector2f(600.0f, 650.0f));
     stateMachine.push_state(std::move(std::make_unique<MenuState>(std::move(menu))));
 
-
     float deltaTime = 0.0f;
     sf::Clock clock;
 
-    while (window.isOpen()) {
+    while (window.isOpen())
+    {
         //deltaTime will make the game logic independent of FPS
         deltaTime = clock.restart().asSeconds();
 

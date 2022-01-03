@@ -19,7 +19,6 @@ void Animation::Update(float deltaTime)
 		if (currentFrame >= frames)
 		{
 			currentFrame = 0;
-
 		}
 	}
 	uvRect.left = currentFrame * uvRect.width;
@@ -28,7 +27,8 @@ void Animation::Update(float deltaTime)
 
 void Animation::ChangeAnimation(AnimationType::AnimationType animationType)
 {
-	if (animationType != currentAnimation) {
+	if (animationType != currentAnimation)
+	{
 		// Revert to default animation if we try to use non-existing animation
 		if (currentAnimation >= animations)
 		{
@@ -45,4 +45,3 @@ sf::IntRect Animation::GetUVRect()
 {
 	return uvRect;
 }
-
