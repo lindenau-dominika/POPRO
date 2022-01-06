@@ -34,18 +34,12 @@ private:
 
 	// Game state variables
 	bool isPlayerInTeleport = false;
-	float timeSinceShot;
 
 	// Game interface
 	sf::RectangleShape healthBar;
-	sf::Sprite avatar;
+	sf::Sprite playerInterface;
 	sf::RectangleShape avatarFrame;
 	sf::Text useText;
-
-	// Debug interface
-	sf::Text fpsText;
-	sf::Text enemyCountText;
-	sf::Text playerPositionText;
 
 	// Cameras
 	sf::View gameView;
@@ -55,9 +49,14 @@ private:
 	bool debugMode;
 	bool GetDebugMode() const;
 	void SetDebugMode(bool debugMode);
+	void UpdateDebugMode(sf::RenderWindow &window, float deltaTime);
+	float timeSinceDebugAction;
+	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> shotLines;
 
-	// Debug objects
-	std::deque<std::pair<sf::Vector2f, sf::Vector2f>> lines;
+	// Debug interface
+	sf::Text fpsText;
+	sf::Text enemyCountText;
+	sf::Text playerPositionText;
 
 public:
 	GameState(StateMachine &machine, std::shared_ptr<ResourceManager> resourceManager);

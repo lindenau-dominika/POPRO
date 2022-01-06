@@ -19,6 +19,16 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	enemies.emplace_back(std::make_unique<Enemy>(10, enemyTexture.get(), enemyAnimation, sf::Vector2f(1500.f, 1300.f), 20.0f));
 	enemies.emplace_back(std::make_unique<Enemy>(5, enemyTexture.get(), enemyAnimation, sf::Vector2f(1800.f, 1300.f), 20.0f));
 
+	// Set up teleports
+	teleports.emplace_back(sf::FloatRect(1720.f, 1770.f, 20.0f, 20.0f), sf::Vector2f(45525.f, 45575.f));
+	teleports.emplace_back(sf::FloatRect(45525, 45615, 20.0f, 20.0f), sf::Vector2f(1770.f, 1790.f));
+
+	teleports.emplace_back(sf::FloatRect(1520.f, 1770.f, 20.0f, 20.0f), sf::Vector2f(1900.0f, 1770.0f));
+	teleports.emplace_back(sf::FloatRect(1720.f, 1900.0f, 20.0f, 20.0f), sf::Vector2f(1900.0f, 1900.0f));
+
+	// Set up buildings
+	buildings.emplace_back(resourceManager->GetTexture(ResourceIDs::Textures::Tavern).get(), sf::Vector2f(137.5, 237.0), sf::Vector2f(1730.0f, 1688.0f), sf::FloatRect(1670.0f, 1620.0f, 120.0, 120.0));
+
 	// Set up background
 	background = sf::RectangleShape(sf::Vector2f(1024.0f * 2, 1024.0f * 2));
 	background.setPosition(450.0, 450.0);
@@ -29,14 +39,14 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	tavernFloor.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::TavernInside).get());
 
 	// Set up interface
-	avatar = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::PlayerAvatar));
-	avatar.setScale(0.125, 0.125);
-	avatar.setPosition(2.0f, 2.0f);
+	float interfaceScale = 0.125f;
+	playerInterface = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::PlayerAvatar));
+	playerInterface.setScale(interfaceScale, interfaceScale);
+	playerInterface.setPosition(2.0f, 2.0f);
 
-	healthBar = sf::RectangleShape(sf::Vector2f(200, 17.f));
+	healthBar = sf::RectangleShape(sf::Vector2f(1079.0f, 133.0f) * interfaceScale);
 	healthBar.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::HealthBar).get());
-	healthBar.setScale(0.68f, 1.f);
-	healthBar.setPosition(112.0f, 15.f);
+	healthBar.setPosition(playerInterface.getPosition() + sf::Vector2f(883.0f, 105.0f) * interfaceScale);
 
 	// Play music
 	auto music = resourceManager->GetMusic(ResourceIDs::Music::Overworld);
@@ -44,7 +54,7 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	music->setLoop(true);
 	music->play();
 
-	// Text
+	// Set up text
 	auto font = resourceManager->GetFont(ResourceIDs::Fonts::General);
 	sf::Vector2f uiCenter = interfaceView.getCenter();
 	sf::Vector2f uiSize = interfaceView.getSize();
@@ -57,35 +67,24 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	useText.setCharacterSize(20);
 	useText.setOutlineThickness(1.0f);
 
-	// Set up FPS text
-	fpsText.setFont(*font);
-	fpsText.setString("X FPS");
-	fpsText.setOrigin(0, fpsText.getLocalBounds().height);
-	fpsText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2);
-	fpsText.setCharacterSize(10);
-
 	// Set up debug texts
-	enemyCountText.setFont(*font);
-	enemyCountText.setString("dummy");
-	enemyCountText.setOrigin(0, enemyCountText.getLocalBounds().height);
-	enemyCountText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - 20);
-	enemyCountText.setCharacterSize(10);
+	float debugCharacterSize = 10;
+	float debugTextHeight = font->getLineSpacing(debugCharacterSize);
+
+	fpsText.setFont(*font);
+	fpsText.setOrigin(0, debugTextHeight);
+	fpsText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - debugCharacterSize * 0);
+	fpsText.setCharacterSize(debugCharacterSize);
 
 	playerPositionText.setFont(*font);
-	playerPositionText.setString("dummy");
-	playerPositionText.setOrigin(0, playerPositionText.getLocalBounds().height);
-	playerPositionText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - 10);
-	playerPositionText.setCharacterSize(10);
+	playerPositionText.setOrigin(0, debugTextHeight);
+	playerPositionText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - debugCharacterSize * 1);
+	playerPositionText.setCharacterSize(debugCharacterSize);
 
-	// Teleports
-	teleports.emplace_back(sf::FloatRect(1720.f, 1770.f, 20.0f, 20.0f), sf::Vector2f(45525.f, 45575.f));
-	teleports.emplace_back(sf::FloatRect(45525, 45615, 20.0f, 20.0f), sf::Vector2f(1770.f, 1790.f));
-
-	teleports.emplace_back(sf::FloatRect(1520.f, 1770.f, 20.0f, 20.0f), sf::Vector2f(1900.0f, 1770.0f));
-	teleports.emplace_back(sf::FloatRect(1720.f, 1900.0f, 20.0f, 20.0f), sf::Vector2f(1900.0f, 1900.0f));
-
-	// Set up tavern
-	buildings.emplace_back(resourceManager->GetTexture(ResourceIDs::Textures::Tavern).get(), sf::Vector2f(137.5, 237.0), sf::Vector2f(1730.0f, 1688.0f), sf::FloatRect(1670.0f, 1620.0f, 120.0, 120.0));
+	enemyCountText.setFont(*font);
+	enemyCountText.setOrigin(0, debugTextHeight);
+	enemyCountText.setPosition(uiCenter.x - uiSize.x / 2, uiCenter.y + uiSize.y / 2 - debugCharacterSize * 2);
+	enemyCountText.setCharacterSize(debugCharacterSize);
 }
 
 void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -160,7 +159,7 @@ void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 			target.draw(exit);
 		}
 
-		for (auto &[playerPos, endPos] : lines)
+		for (auto &[playerPos, endPos] : shotLines)
 		{
 			sf::Vertex line[] = {
 				playerPos,
@@ -173,13 +172,13 @@ void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Draw UI
 	target.setView(interfaceView);
 	target.draw(healthBar);
-	target.draw(avatar);
+	target.draw(playerInterface);
 	if (isPlayerInTeleport)
 	{
 		target.draw(useText);
 	}
 
-	// Draw FPS counter in debug mode
+	// Draw debug mode texts
 	if (GetDebugMode())
 	{
 		target.draw(fpsText);
@@ -190,6 +189,7 @@ void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void GameState::update(sf::RenderWindow &window, float deltaTime)
 {
+	// Handle window events
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
@@ -199,12 +199,13 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		}
 		else if (event.type == event.KeyPressed)
 		{
+			// Go back to main menu
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				parent_machine.pop_state();
 				return;
 			}
-
+			// Toggle debug mode
 			if (event.key.code == sf::Keyboard::B)
 			{
 				SetDebugMode(!GetDebugMode());
@@ -212,7 +213,7 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		}
 	}
 
-	// Player movement
+	// Calculate player movement direction vector
 	sf::Vector2f playerDirection;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
@@ -230,23 +231,40 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 	{
 		playerDirection.y += 1;
 	}
+	player->SetDirection(playerDirection);
 
-	// Creating the if function which allows us to create an arrow directed to the mouse's position. Having determined its parameteres, texture. Limiting the number of debug lines.
+	// Update the player
+	player->update(deltaTime);
+
+	// Return to the main menu if player dies
+	if (!player->IsAlive())
+	{
+		parent_machine.pop_state();
+		return;
+	}
+
+	// Creating the if function which allows us to create an arrow directed to the mouse's position.
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
+		// Get mouse click screen position
 		sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+
+		// Get the world position corresponding to the position that was clicked on the screen
 		sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
-		sf::Vector2f playerPos = player->GetPosition();
-		sf::Vector2f direction = worldPos - playerPos;
+
+		// Calculate direction vector of arrow
+		sf::Vector2f direction = worldPos - player->GetPosition();
 
 		// Create an arrow if player can shoot
 		if (player->Shoot(direction))
-		{	
-			// Add debug line
-			lines.emplace_back(playerPos, worldPos);
-			if (lines.size() > 4)
+		{
+			// Add debug line between player's position and clicked position
+			shotLines.emplace_back(player->GetPosition(), worldPos);
+
+			// Store only last 4 shot lines
+			if (shotLines.size() > 4)
 			{
-				lines.pop_front();
+				shotLines.pop_front();
 			}
 
 			// Get arrow texture
@@ -254,48 +272,30 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 			Animation arrowAnimation(arrowTexture->getSize(), 1, 4, 0.12f);
 
 			// Push new arrow onto the list of arrows
-			Arrow arrow(arrowTexture.get(), arrowAnimation, playerPos, direction, 330.0f, 3.0f);
+			Arrow arrow(arrowTexture.get(), arrowAnimation, player->GetPosition(), direction, 330.0f, 3.0f);
 			arrows.push_back(arrow);
 		}
 	}
 
-	// Spawning enemies in debug mode
-	timeSinceShot += deltaTime;
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-	{
-		if (timeSinceShot > 0.5)
-		{
-			sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-			sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
-
-			auto enemyTexture = resourceManager->GetTexture(ResourceIDs::Textures::EnemySpriteSheet);
-			Animation enemyAnimation(enemyTexture->getSize(), 8, 8, 0.07f);
-			enemies.emplace_back(std::make_unique<Enemy>(9, enemyTexture.get(), enemyAnimation, worldPos, 120.0f));
-
-			timeSinceShot = 0;
-		}
-	}
-
-	player->Move(playerDirection);
-	player->update(deltaTime);
-	if (!player->IsAlive())
-	{
-		parent_machine.pop_state();
-		return;
-	}
-
+	// Update enemies
 	auto enemy = enemies.begin();
 	while (enemy != enemies.end())
 	{
+		// Check if enemy is alive
 		if (!(*enemy)->IsAlive())
 		{
+			// Remove enemy if he is dead
 			enemy = enemies.erase(enemy);
 		}
 		else
 		{
+			// Update enemy
 			(*enemy)->update(deltaTime);
+
+			// Handle collision with player
 			(*enemy)->HandleCollision(*player);
 
+			// Calculate direction vector to make enemy follow the player
 			sf::Vector2f direction = (*enemy)->GetPosition() - player->GetPosition();
 			float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
 			sf::Vector2f normalizedDirection(0, 0);
@@ -304,12 +304,9 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 				normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
 			}
 			normalizedDirection *= -1.0f;
-
 			(*enemy)->SetDirection(normalizedDirection);
-			for (auto &otherEnemy : enemies)
-			{
-				//(*enemy)->HandleCollision(*otherEnemy);
-			}
+
+			// Increment iterator
 			enemy++;
 		}
 	}
@@ -318,36 +315,45 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 	isPlayerInTeleport = false;
 	for (auto &teleport : teleports)
 	{
-		// Checking if Player intersects with teleport
+		// Check if Player intersects with teleport
 		isPlayerInTeleport |= player->GetBounds().intersects(teleport.GetBounds());
 
-		// Interactive feature thanks to which the whole teleportation is going to work only if E is pressed 
+		// Interactive feature thanks to which the whole teleportation is going to work only if E is pressed
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerInTeleport)
 		{
-			// Teleporting player to the exit position
+			// Teleport player to the exit position
 			player->SetPosition(teleport.GetExitPosition());
 			isPlayerInTeleport = false;
 		}
 	}
-	// 
-	auto it = arrows.begin();
-	while (it != arrows.end())
+
+	// Update arrows
+	auto arrow = arrows.begin();
+	while (arrow != arrows.end())
 	{
-		if (!it->IsAlive())
+		// Check if we are supposed to destroy arrow (after collision or after its lifetime ended)
+		if (!arrow->IsAlive())
 		{
-			it = arrows.erase(it);
+			// Remove arrow from list of arrows
+			arrow = arrows.erase(arrow);
 		}
 		else
 		{
-			it->update(deltaTime);
+			// Update arrow
+			arrow->update(deltaTime);
+
+			// Handle arrow collision with enemies
 			for (auto &enemy : enemies)
 			{
-				it->HandleCollision(*enemy);
+				arrow->HandleCollision(*enemy);
 			}
-			it++;
+
+			// Increment iterator
+			arrow++;
 		}
 	}
 
+	// Handle building collision
 	for (auto &building : buildings)
 	{
 		building.HandleCollision(*player);
@@ -357,22 +363,28 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		}
 	}
 
-	healthBar.setScale(static_cast<float>(player->GetHP()) / player->GetMaxHP() * 0.68f, 1.f);
+	// Update interface
+	healthBar.setScale(static_cast<float>(player->GetHP()) / player->GetMaxHP(), 1.f);
 
+	// TEMP: Set game view center for free-roam and tavern
 	if (player->GetPosition().x < 30000)
 	{
+		// Free-roam in open world
 		gameView.setCenter(player->GetPosition());
 		gameView.setSize(sf::Vector2f(700.0f, 384.0f));
 	}
 	else
 	{
+		// Centered view in tavern
 		gameView.setCenter(45525.f, 45475.f);
 		gameView.setSize(sf::Vector2f(584.0f, 320.0f));
 	}
 
-	fpsText.setString(std::to_string(static_cast<int>(1 / deltaTime)) + " FPS");
-	enemyCountText.setString(std::to_string(enemies.size()) + " enemies");
-	playerPositionText.setString("XY: " + std::to_string(int(player->GetPosition().x)) + " " + std::to_string(int(player->GetPosition().y)) + ", HP: " + std::to_string(player->GetHP()));
+	// Update debug objects
+	if (GetDebugMode())
+	{
+		UpdateDebugMode(window, deltaTime);
+	}
 }
 
 bool GameState::GetDebugMode() const
@@ -411,6 +423,30 @@ void GameState::SetDebugMode(bool debugMode)
 		for (auto &building : buildings)
 		{
 			building.GetBody()->setOutlineThickness(0);
+		}
+	}
+}
+
+void GameState::UpdateDebugMode(sf::RenderWindow &window, float deltaTime)
+{
+	fpsText.setString(std::to_string(static_cast<int>(1 / deltaTime)) + " FPS");
+	enemyCountText.setString(std::to_string(enemies.size()) + " enemies");
+	playerPositionText.setString("XY: " + std::to_string(int(player->GetPosition().x)) + " " + std::to_string(int(player->GetPosition().y)) + ", HP: " + std::to_string(player->GetHP()));
+
+	// Spawn enemies in debug mode
+	timeSinceDebugAction += deltaTime;
+	if (timeSinceDebugAction > 0.5)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+			sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
+
+			auto enemyTexture = resourceManager->GetTexture(ResourceIDs::Textures::EnemySpriteSheet);
+			Animation enemyAnimation(enemyTexture->getSize(), 8, 8, 0.07f);
+			enemies.emplace_back(std::make_unique<Enemy>(9, enemyTexture.get(), enemyAnimation, worldPos, 120.0f));
+
+			timeSinceDebugAction = 0;
 		}
 	}
 }

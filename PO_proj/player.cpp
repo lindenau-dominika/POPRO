@@ -13,11 +13,6 @@ Player::Player(int hp, int level, sf::Texture *texture, Animation animation, flo
 	GetBody()->setOrigin(GetBody()->getSize().x / 2, GetBody()->getSize().y / 2);
 }
 
-void Player::Move(sf::Vector2f direction)
-{
-	SetDirection(direction);
-}
-
 //declaring the movement
 void Player::update(float deltaTime)
 {
@@ -102,7 +97,8 @@ void Player::update(float deltaTime)
 
 	GetAnimation().Update(deltaTime);
 	GetBody()->setTextureRect(GetAnimation().GetUVRect());
-	if(CanMove()) {
+	if (CanMove())
+	{
 		GetBody()->move(dx * deltaTime, dy * deltaTime);
 	}
 }
