@@ -15,10 +15,18 @@ void Animation::Update(float deltaTime)
 		totalTime -= switchTime;
 		currentFrame += 1;
 
-		// Wrap around if we went past last frame
+		// Handle animation's end
 		if (currentFrame >= frames)
 		{
-			currentFrame = 0;
+			if (playOnce) {
+				// Stop current animation and play the next animation continuously
+				playOnce = false;
+				ChangeAnimation(nextAnimation);
+			}
+			else {
+				// Wrap around if we went past last frame and we are playing the animation continuously
+				currentFrame = 0;
+			}
 		}
 	}
 	uvRect.left = currentFrame * uvRect.width;
@@ -27,18 +35,38 @@ void Animation::Update(float deltaTime)
 
 void Animation::ChangeAnimation(AnimationType::AnimationType animationType)
 {
+	// Revert to default animation if we try to use non-existing animation
+	if (animationType >= animations)
+	{
+		animationType = AnimationType::EntityDefault;
+	}
+
 	if (animationType != currentAnimation)
 	{
-		// Revert to default animation if we try to use non-existing animation
-		if (currentAnimation >= animations)
-		{
-			currentAnimation = AnimationType::EntityDefault;
+		if (playOnce) {
+			nextAnimation = animationType;
 		}
-
-		totalTime = 0;
-		currentAnimation = animationType;
-		currentFrame = 0;
+		else {
+			totalTime = 0;
+			currentAnimation = animationType;
+			currentFrame = 0;
+		}
 	}
+}
+
+void Animation::PlayAnimationOnce(AnimationType::AnimationType animationType, AnimationType::AnimationType nextAnimation)
+{
+	// Revert to default animation if we try to use non-existing animation
+	if (currentAnimation >= animations)
+	{
+		currentAnimation = AnimationType::EntityDefault;
+	}
+
+	totalTime = 0;
+	currentAnimation = animationType;
+	this->nextAnimation = nextAnimation;
+	currentFrame = 0;
+	playOnce = true;
 }
 
 sf::IntRect Animation::GetUVRect()

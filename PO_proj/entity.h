@@ -5,7 +5,7 @@
 class Entity : public sf::Drawable
 {
 public:
-	Entity(sf::Texture *texture, float speed, int maxHp);
+	Entity(sf::Texture *texture, Animation animation, float speed, int maxHp);
 
 	virtual void update(float deltaTime) = 0;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -33,15 +33,17 @@ public:
 		damageCooldown = coolDown;
 	}
 
+	bool Shoot(sf::Vector2f direction);
+
 protected:
-	void UpdateCooldown(float deltaTime)
-	{
-		timeSinceLastDamage += deltaTime;
-	}
+	void UpdateCooldown(float deltaTime);
+	bool CanMove() const;
+	Animation& GetAnimation();
 
 private:
 	sf::RectangleShape body;
 	sf::FloatRect bound;
+	Animation animation;
 
 	sf::Vector2f direction;
 	sf::Vector2f lastDirection;
@@ -51,6 +53,12 @@ private:
 
 	float damageCooldown = 1.0f;
 	float timeSinceLastDamage = damageCooldown;
+
+	float attackCooldown = 0.5f;
+	float timeSinceLastAttack = attackCooldown;
+
+	float movementCooldown = 0.3f;
+	float timeSinceMovementCooldown = movementCooldown;
 
 	int hp;
 	int maxHp;

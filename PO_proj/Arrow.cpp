@@ -6,7 +6,18 @@ Arrow::Arrow(sf::Texture *texture, Animation animation, sf::Vector2f initialPosi
 	body.setSize(sf::Vector2f(32.0f, 32.0f));
 	body.setPosition(position);
 	body.setTexture(texture);
-	velocity = sf::Vector2f(direction.x * speed, direction.y * speed);
+	body.setOrigin(body.getSize() / 2.0f);
+
+	// Normalize direction
+	float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
+	sf::Vector2f normalizedDirection(0, 0);
+	if (magnitude != 0)
+	{
+		normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
+	}
+
+	// Set velocity
+	velocity = sf::Vector2f(normalizedDirection.x * speed, normalizedDirection.y * speed);
 }
 
 void Arrow::update(float deltaTime)

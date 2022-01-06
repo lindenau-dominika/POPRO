@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "animation.h"
 
-Entity::Entity(sf::Texture *texture, float speed, int hp) : speed(speed), maxHp(hp), hp(hp)
+Entity::Entity(sf::Texture *texture, Animation animation, float speed, int hp) : animation(animation), speed(speed), maxHp(hp), hp(hp)
 {
 	alive = true;
 }
@@ -123,4 +123,39 @@ void Entity::HandleCollision(Entity &other)
 			other.TakeDamage(150);
 		}
 	}
+}
+
+bool Entity::Shoot(sf::Vector2f direction) {
+	if (timeSinceLastAttack >= attackCooldown) {
+		timeSinceLastAttack = 0;
+		timeSinceMovementCooldown = 0;
+
+		if (direction.x >= 0) {
+			GetAnimation().PlayAnimationOnce(AnimationType::AnimationType::EntityShootingRight, AnimationType::AnimationType::EntityStandingDown);
+			SetDirection(sf::Vector2f(0, 0));
+		}
+		else {
+			GetAnimation().PlayAnimationOnce(AnimationType::AnimationType::EntityShootingLeft, AnimationType::AnimationType::EntityStandingUp);
+			SetDirection(sf::Vector2f(0, 0));
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void Entity::UpdateCooldown(float deltaTime)
+{
+	timeSinceLastDamage += deltaTime;
+	timeSinceLastAttack += deltaTime;
+	timeSinceMovementCooldown += deltaTime;
+}
+
+bool Entity::CanMove() const {
+	return timeSinceMovementCooldown >= movementCooldown;
+}
+
+Animation& Entity::GetAnimation() {
+	return animation;
 }

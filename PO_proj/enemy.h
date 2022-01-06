@@ -11,6 +11,5 @@ public:
 	virtual void update(float deltaTime) override;
 
 private:
-	Animation animation;
 	bool alive;
 };

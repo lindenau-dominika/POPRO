@@ -11,7 +11,6 @@ public:
 	virtual void update(float deltaTime) override;
 
 private:
-	Animation animation;
 	int level;
 	int lvl();
 	int exp();

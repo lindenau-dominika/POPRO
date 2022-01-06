@@ -10,7 +10,7 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 {
 	// Set up player
 	auto playerTexture = resourceManager->GetTexture(ResourceIDs::Textures::PlayerSpriteSheet);
-	Animation playerAnimation(playerTexture->getSize(), 8, 8, 0.07f);
+	Animation playerAnimation(playerTexture->getSize(), 10, 8, 0.07f);
 	player = std::make_unique<Player>(1337, 1, playerTexture.get(), playerAnimation, 200.0f);
 
 	// Set up enemies
@@ -231,39 +231,36 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		playerDirection.y += 1;
 	}
 
-	// Player action
-	timeSinceShot += deltaTime;
+	// Creating the if function which allows us to create an arrow directed to the mouse's position. Having determined its parameteres, texture. Limiting the number of debug lines.
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (timeSinceShot > 0.5)
-		{
-			sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-			sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
-			sf::Vector2f playerPos = player->GetPosition();
+		sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+		sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, gameView);
+		sf::Vector2f playerPos = player->GetPosition();
+		sf::Vector2f direction = worldPos - playerPos;
 
+		// Create an arrow if player can shoot
+		if (player->Shoot(direction))
+		{	
+			// Add debug line
 			lines.emplace_back(playerPos, worldPos);
 			if (lines.size() > 4)
 			{
 				lines.pop_front();
 			}
 
-			sf::Vector2f direction = worldPos - playerPos;
-			float magnitude = std::sqrtf(direction.x * direction.x + direction.y * direction.y);
-			sf::Vector2f normalizedDirection(0, 0);
-			if (magnitude != 0)
-			{
-				normalizedDirection = sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
-			}
-
+			// Get arrow texture
 			auto arrowTexture = resourceManager->GetTexture(ResourceIDs::Textures::ArrowSpriteSheet);
 			Animation arrowAnimation(arrowTexture->getSize(), 1, 4, 0.12f);
-			Arrow arrow(arrowTexture.get(), arrowAnimation, playerPos, normalizedDirection, 330.0f, 3.0f);
-			arrows.push_back(arrow);
 
-			timeSinceShot = 0;
+			// Push new arrow onto the list of arrows
+			Arrow arrow(arrowTexture.get(), arrowAnimation, playerPos, direction, 330.0f, 3.0f);
+			arrows.push_back(arrow);
 		}
 	}
 
+	// Spawning enemies in debug mode
+	timeSinceShot += deltaTime;
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		if (timeSinceShot > 0.5)
@@ -317,18 +314,22 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		}
 	}
 
+	// Player teleportation
 	isPlayerInTeleport = false;
 	for (auto &teleport : teleports)
 	{
+		// Checking if Player intersects with teleport
 		isPlayerInTeleport |= player->GetBounds().intersects(teleport.GetBounds());
 
+		// Interactive feature thanks to which the whole teleportation is going to work only if E is pressed 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerInTeleport)
 		{
+			// Teleporting player to the exit position
 			player->SetPosition(teleport.GetExitPosition());
 			isPlayerInTeleport = false;
 		}
 	}
-
+	// 
 	auto it = arrows.begin();
 	while (it != arrows.end())
 	{
