@@ -11,6 +11,7 @@
 #include "ResourceManager.h"
 #include "Arrow.h"
 #include "Building.h"
+#include "NPC.h"
 
 class GameState : public State
 {
@@ -22,6 +23,7 @@ private:
 	// Entities
 	std::unique_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<NPC>> NPCs;
 	std::vector<Arrow> arrows;
 
 	// Backgrounds
@@ -34,6 +36,7 @@ private:
 
 	// Game state variables
 	bool isPlayerInTeleport = false;
+	bool isPlayerWithNPC = false;
 
 	// Game interface
 	sf::RectangleShape healthBar;

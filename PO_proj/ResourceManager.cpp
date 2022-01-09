@@ -2,7 +2,11 @@
 
 std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::texturePaths = {
 	{ResourceIDs::Textures::MenuBackground, "assets/menu.png"},
+	{ResourceIDs::Textures::MenuStars, "assets/stars1.png"},
+	{ResourceIDs::Textures::MenuStars1, "assets/stars2.png"},
+	{ResourceIDs::Textures::MenuStars2, "assets/stars3.png"},
 	{ResourceIDs::Textures::PlayerSpriteSheet, "assets/player.png"},
+	{ResourceIDs::Textures::NPCSpriteSheet, "assets/NPCs.png"},
 	{ResourceIDs::Textures::PlayerAvatar, "assets/interface.png"},
 	{ResourceIDs::Textures::HealthBar, "assets/healthbar.png"},
 	{ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png"},
@@ -13,7 +17,15 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 };
 
 std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {
-	{ResourceIDs::Fonts::General, "assets/arial.ttf"}};
+	//{ResourceIDs::Fonts::General, "assets/Cardinal.ttf"}};
+//	{ResourceIDs::Fonts::General, "assets/enchanted.otf"}};
+//	{ResourceIDs::Fonts::General, "assets/1t.ttf"}}; // 4/10  3/10
+//	{ResourceIDs::Fonts::General, "assets/2t.ttf"}}; //5/10 0-2/10
+	{ResourceIDs::Fonts::General, "assets/3t.ttf"}}; //7/10 6/10  7/10
+//	{ResourceIDs::Fonts::General, "assets/4t.ttf"}}; //4/10 5/10  4/10
+//	{ResourceIDs::Fonts::General, "assets/5t.ttf"}}; //broken
+//	{ResourceIDs::Fonts::General, "assets/6t.ttf"}}; //7/10 4/10 6/10
+//	{ResourceIDs::Fonts::General, "assets/7t.ttf"}};
 
 std::unordered_map<ResourceIDs::Music, std::string> ResourceManager::musicPaths = {
 	{ResourceIDs::Music::Overworld, "assets/soundtrack.wav"}};

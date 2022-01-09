@@ -8,8 +8,12 @@ namespace ResourceIDs
 	enum class Textures
 	{
 		MenuBackground,
+		MenuStars,
+		MenuStars1,
+		MenuStars2,
 		Ground,
 		PlayerSpriteSheet,
+		NPCSpriteSheet,
 		PlayerAvatar,
 		HealthBar,
 		EnemySpriteSheet,

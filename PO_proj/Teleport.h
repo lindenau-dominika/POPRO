@@ -18,8 +18,8 @@ public:
 
 /*
 
-Teleport -> teleportowa�
+Teleport -> teleportowac
 
-Kurcze szefie, s�uszna uwaga ^^^^
+Kurcze szefie, sluszna uwaga ^^^^
 
 */

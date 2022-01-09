@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "player.h"
 #include "entity.h"
+#include "NPC.h"
 #include <algorithm>
 #include <iostream>
 
@@ -29,6 +30,11 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	// Set up buildings
 	buildings.emplace_back(resourceManager->GetTexture(ResourceIDs::Textures::Tavern).get(), sf::Vector2f(137.5, 237.0), sf::Vector2f(1730.0f, 1688.0f), sf::FloatRect(1670.0f, 1620.0f, 120.0, 120.0));
 
+	// Set up NPC
+	auto NPCTexture = resourceManager->GetTexture(ResourceIDs::Textures::NPCSpriteSheet);
+	Animation NPCAnimation(NPCTexture->getSize(), 10, 9, 0.3f);
+	NPCs.emplace_back(std::make_unique<NPC>(NPCTexture.get(), NPCAnimation, sf::FloatRect(1690.f, 1760.f, 30.f, 30.f), sf::Vector2f(1690.f, 1760.f)));
+
 	// Set up background
 	background = sf::RectangleShape(sf::Vector2f(1024.0f * 2, 1024.0f * 2));
 	background.setPosition(450.0, 450.0);
@@ -50,7 +56,7 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 
 	// Play music
 	auto music = resourceManager->GetMusic(ResourceIDs::Music::Overworld);
-	music->setVolume(0.f);
+	music->setVolume(8.f);
 	music->setLoop(true);
 	music->play();
 
@@ -58,7 +64,7 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	auto font = resourceManager->GetFont(ResourceIDs::Fonts::General);
 	sf::Vector2f uiCenter = interfaceView.getCenter();
 	sf::Vector2f uiSize = interfaceView.getSize();
-
+	 
 	// Set up use text
 	useText.setFont(*font);
 	useText.setString("Press E to use");
@@ -119,8 +125,15 @@ void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		objectsToDraw.emplace_back(enemy.get(), enemy->GetBounds());
 	}
 
+	for (auto& NPC : NPCs)
+	{
+		objectsToDraw.emplace_back(NPC.get(), NPC->GetBounds());
+	}
+
 	// Add player to the list of objects to draw
 	objectsToDraw.emplace_back(player.get(), player->GetBounds());
+
+	
 
 	// Sort objects by Y
 	std::sort(objectsToDraw.begin(), objectsToDraw.end(), [](DrawableObject a, DrawableObject b)
@@ -235,6 +248,13 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 
 	// Update the player
 	player->update(deltaTime);
+	
+	// Update the NPC
+	
+	for (auto& NPC : NPCs)
+	{
+		NPC->update(deltaTime);
+	}
 
 	// Return to the main menu if player dies
 	if (!player->IsAlive())
@@ -324,6 +344,27 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 			// Teleport player to the exit position
 			player->SetPosition(teleport.GetExitPosition());
 			isPlayerInTeleport = false;
+		}
+	}
+
+	isPlayerWithNPC = false;
+	for (auto& NPC : NPCs)
+	{
+		isPlayerWithNPC |= player->GetBounds().intersects(NPC->GetBounds());
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerWithNPC)
+		{
+			/*
+			hmmm
+			moze
+			inaczej
+			idk
+			mozg not working tudej
+			ale patrz
+			moze moznaby
+			smutek dialogi
+			
+			*/
 		}
 	}
 
