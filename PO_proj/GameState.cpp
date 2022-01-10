@@ -45,15 +45,20 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	tavernFloor.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::TavernInside).get());
 
 	// Set up interface
+	sf::Vector2f uiCenter = interfaceView.getCenter();
+	sf::Vector2f uiSize = interfaceView.getSize();
+
 	float interfaceScale = 0.125f;
 	playerInterface = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::PlayerAvatar));
 	playerInterface.setScale(interfaceScale, interfaceScale);
 	playerInterface.setPosition(2.0f, 2.0f);
 
-	float chatBoxScale = 0.125f;
+	float chatBoxScale = .8f;
 	chatBox = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::ChatBox));
 	chatBox.setScale(chatBoxScale, chatBoxScale);
-	chatBox.setPosition(200.f, 500.f);
+	chatBox.setOrigin(chatBox.getLocalBounds().width / 2.0f, chatBox.getLocalBounds().height);
+	chatBox.setPosition(uiCenter.x, uiCenter.y + uiSize.y / 2 - 10);
+	chatBox.setColor(sf::Color(255, 255, 255, 180));
 
 	healthBar = sf::RectangleShape(sf::Vector2f(1079.0f, 133.0f) * interfaceScale);
 	healthBar.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::HealthBar).get());
@@ -67,11 +72,10 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 
 	// Set up text
 	auto font = resourceManager->GetFont(ResourceIDs::Fonts::General);
-	sf::Vector2f uiCenter = interfaceView.getCenter();
-	sf::Vector2f uiSize = interfaceView.getSize();
-	 
+	auto gothicFont = resourceManager->GetFont(ResourceIDs::Fonts::Gothic);
+
 	// Set up use text
-	useText.setFont(*font);
+	useText.setFont(*gothicFont);
 	useText.setString("Press E to use");
 	useText.setOrigin(useText.getLocalBounds().width / 2, useText.getLocalBounds().height);
 	useText.setPosition(uiCenter.x, uiCenter.y + uiSize.y / 2 - 10);
@@ -191,6 +195,9 @@ void GameState::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.setView(interfaceView);
 	target.draw(healthBar);
 	target.draw(playerInterface);
+	if (isPlayerTalkingWithNPC) {
+		target.draw(chatBox);
+	}
 	if (isPlayerInTeleport)
 	{
 		target.draw(useText);
@@ -357,9 +364,9 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 	{
 		isPlayerWithNPC |= player->GetBounds().intersects(NPC->GetBounds());
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerWithNPC)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerWithNPC && !isPlayerTalkingWithNPC)
 		{
-			window.draw(playerInterface);
+			isPlayerTalkingWithNPC = true;
 			/*
 			hmmm
 			moze
@@ -372,6 +379,9 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 			
 			*/
 		}
+	}
+	if (!isPlayerWithNPC) {
+		isPlayerTalkingWithNPC = false;
 	}
 
 	// Update arrows

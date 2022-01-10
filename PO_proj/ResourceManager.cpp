@@ -18,15 +18,9 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 };
 
 std::unordered_map<ResourceIDs::Fonts, std::string> ResourceManager::fontPaths = {
-	//{ResourceIDs::Fonts::General, "assets/Cardinal.ttf"}};
-//	{ResourceIDs::Fonts::General, "assets/enchanted.otf"}};
-//	{ResourceIDs::Fonts::General, "assets/1t.ttf"}}; // 4/10  3/10
-//	{ResourceIDs::Fonts::General, "assets/2t.ttf"}}; //5/10 0-2/10
-	{ResourceIDs::Fonts::General, "assets/3t.ttf"}}; //7/10 6/10  7/10
-//	{ResourceIDs::Fonts::General, "assets/4t.ttf"}}; //4/10 5/10  4/10
-//	{ResourceIDs::Fonts::General, "assets/5t.ttf"}}; //broken
-//	{ResourceIDs::Fonts::General, "assets/6t.ttf"}}; //7/10 4/10 6/10
-//	{ResourceIDs::Fonts::General, "assets/7t.ttf"}};
+	{ResourceIDs::Fonts::General, "assets/arial.ttf"}, 
+	{ResourceIDs::Fonts::Gothic, "assets/labrit.ttf"}
+};
 
 std::unordered_map<ResourceIDs::Music, std::string> ResourceManager::musicPaths = {
 	{ResourceIDs::Music::Overworld, "assets/soundtrack.wav"}};

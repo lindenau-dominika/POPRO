@@ -37,6 +37,7 @@ private:
 	// Game state variables
 	bool isPlayerInTeleport = false;
 	bool isPlayerWithNPC = false;
+	bool isPlayerTalkingWithNPC = false;
 
 	// Game interface
 	sf::RectangleShape healthBar;

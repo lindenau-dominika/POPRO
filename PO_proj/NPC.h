@@ -11,8 +11,12 @@ public:
 	virtual void update(float deltaTime) override;
 
 	const sf::FloatRect GetBounds() const;
-
+	std::string GetCurrentDialog() const {
+		return dialogs.at(current_dialog);
+	}
 private:
 	sf::FloatRect bounding_box;
+	std::vector<std::string> dialogs;
+	int current_dialog = 0;
 };
 

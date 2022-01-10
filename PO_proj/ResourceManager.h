@@ -26,6 +26,7 @@ namespace ResourceIDs
 	enum class Fonts
 	{
 		General,
+		Gothic,
 	};
 
 	enum class Music

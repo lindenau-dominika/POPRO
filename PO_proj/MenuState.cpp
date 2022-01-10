@@ -8,7 +8,7 @@
 
 MenuState::MenuState(StateMachine &machine, const std::string &title, std::shared_ptr<ResourceManager> resourceManager) : State(machine), resourceManager(resourceManager), menuView(sf::View(sf::Vector2f(910.0f, 512.0f), sf::Vector2f(1820.0f, 1024.0f)))
 {
-	this->title.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General).get());
+	this->title.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::Gothic).get());
 	this->title.setString(title);
 	this->title.setCharacterSize(TITLE_SIZE);
 	this->title.setFillColor(TITLE_COLOR);
@@ -118,7 +118,7 @@ void MenuState::update(sf::RenderWindow &window, float deltaTime)
 void MenuState::add_option(const std::string &contents, const sf::Vector2f position)
 {
 	sf::Text text;
-	text.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::General));
+	text.setFont(*resourceManager->GetFont(ResourceIDs::Fonts::Gothic));
 	text.setString(contents);
 	text.setPosition(position);
 	text.setOutlineThickness(2);
