@@ -15,6 +15,7 @@ namespace ResourceIDs
 		PlayerSpriteSheet,
 		NPCSpriteSheet,
 		PlayerAvatar,
+		ChatBox,
 		HealthBar,
 		EnemySpriteSheet,
 		ArrowSpriteSheet,

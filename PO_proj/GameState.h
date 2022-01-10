@@ -41,6 +41,7 @@ private:
 	// Game interface
 	sf::RectangleShape healthBar;
 	sf::Sprite playerInterface;
+	sf::Sprite chatBox;
 	sf::RectangleShape avatarFrame;
 	sf::Text useText;
 

@@ -8,6 +8,7 @@ std::unordered_map<ResourceIDs::Textures, std::string> ResourceManager::textureP
 	{ResourceIDs::Textures::PlayerSpriteSheet, "assets/player.png"},
 	{ResourceIDs::Textures::NPCSpriteSheet, "assets/NPCs.png"},
 	{ResourceIDs::Textures::PlayerAvatar, "assets/interface.png"},
+	{ResourceIDs::Textures::ChatBox, "assets/chat_box.png"},
 	{ResourceIDs::Textures::HealthBar, "assets/healthbar.png"},
 	{ResourceIDs::Textures::EnemySpriteSheet, "assets/enemo.png"},
 	{ResourceIDs::Textures::Ground, "assets/map.png"},

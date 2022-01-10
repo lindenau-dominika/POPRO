@@ -28,8 +28,8 @@ int main()
 
     // Set up menu
     MenuState menu(stateMachine, "Yggdrasil", resourceManager);
-    menu.add_option("Uno gaem my friend?", sf::Vector2f(300.0f, 250.0f));
-    menu.add_option("Settingos, but u dont need this", sf::Vector2f(400.0f, 450.0f));
+    menu.add_option("Play", sf::Vector2f(300.0f, 250.0f));
+    menu.add_option("Settings", sf::Vector2f(400.0f, 450.0f));
     menu.add_option("Exito see you laterito", sf::Vector2f(600.0f, 650.0f));
     stateMachine.push_state(std::move(std::make_unique<MenuState>(std::move(menu))));
 

@@ -50,6 +50,11 @@ GameState::GameState(StateMachine &machine, std::shared_ptr<ResourceManager> res
 	playerInterface.setScale(interfaceScale, interfaceScale);
 	playerInterface.setPosition(2.0f, 2.0f);
 
+	float chatBoxScale = 0.125f;
+	chatBox = sf::Sprite(*resourceManager->GetTexture(ResourceIDs::Textures::ChatBox));
+	chatBox.setScale(chatBoxScale, chatBoxScale);
+	chatBox.setPosition(200.f, 500.f);
+
 	healthBar = sf::RectangleShape(sf::Vector2f(1079.0f, 133.0f) * interfaceScale);
 	healthBar.setTexture(resourceManager->GetTexture(ResourceIDs::Textures::HealthBar).get());
 	healthBar.setPosition(playerInterface.getPosition() + sf::Vector2f(883.0f, 105.0f) * interfaceScale);
@@ -354,6 +359,7 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerWithNPC)
 		{
+			window.draw(playerInterface);
 			/*
 			hmmm
 			moze
