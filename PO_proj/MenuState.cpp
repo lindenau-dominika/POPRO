@@ -14,9 +14,6 @@ MenuState::MenuState(StateMachine &machine, const std::string &title, std::share
 	this->title.setFillColor(TITLE_COLOR);
 	this->title.setPosition(TITLE_POSITION);
 
-	/*
-	std::vec
-	*/
 
 	menuBackground = sf::RectangleShape(sf::Vector2f(1820.0f, 1024.0f));
 	menuBackground.setPosition(0.0, 0.0);

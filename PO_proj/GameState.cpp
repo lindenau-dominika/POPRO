@@ -367,17 +367,6 @@ void GameState::update(sf::RenderWindow &window, float deltaTime)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && isPlayerWithNPC && !isPlayerTalkingWithNPC)
 		{
 			isPlayerTalkingWithNPC = true;
-			/*
-			hmmm
-			moze
-			inaczej
-			idk
-			mozg not working tudej
-			ale patrz
-			moze moznaby
-			smutek dialogi
-			
-			*/
 		}
 	}
 	if (!isPlayerWithNPC) {

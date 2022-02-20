@@ -13,9 +13,6 @@ const sf::FloatRect Teleport::GetBounds() const
 	return this->bounding_box;
 }
 
-//bool Teleport::IsStandingOnTeleport(sf::Vector2f position) const {
-//	return bounding_box.contains(position);
-//}
 
 sf::Vector2f Teleport::GetExitPosition() const
 {

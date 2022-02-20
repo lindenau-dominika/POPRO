@@ -12,7 +12,6 @@ public:
 	~Teleport();
 
 	const sf::FloatRect GetBounds() const;
-	// bool IsStandingOnTeleport(sf::Vector2f position) const ;
 	sf::Vector2f GetExitPosition() const;
 };
 
@@ -20,6 +19,6 @@ public:
 
 Teleport -> teleportowac
 
-Kurcze szefie, sluszna uwaga ^^^^
+szefie, sluszna uwaga ^^^^
 
 */
